@@ -65,7 +65,7 @@ class Frontera {
 		/*
 		 * Se llama al formulario de SARA Form Creator
 		 */
-        include_once ($this->ruta . "/formulario/paginaHome.html.php");
+        include_once ($this->ruta . "/formulario/form.php");
 
     }
 

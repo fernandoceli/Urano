@@ -104,6 +104,16 @@ class Sql extends \Sql {
 				$cadenaSql .= 'WHERE ';
 				$cadenaSql .= 'id_bloque>0';
 				break;
+				
+			case 'buscarNoticias':
+				$cadenaSql = "SELECT ";
+				$cadenaSql .= "nombre, ";
+				$cadenaSql .= "descripcion, ";
+				$cadenaSql .= "enlace ";
+				$cadenaSql .= "FROM general.noticias ";
+				$cadenaSql .= "WHERE estado=1 ";
+				$cadenaSql .= "OR now()::date BETWEEN fecha_inicio AND fecha_fin ";
+				$cadenaSql .= "ORDER BY id_noticia, id_tipo";
 		}
 		
 		return $cadenaSql;

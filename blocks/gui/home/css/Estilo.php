@@ -3,7 +3,7 @@ echo '<meta http-equiv="X-UA-Compatible" content="IE=edge">';
 echo '<meta name="viewport" content="width=device-width">';
 $indice=0;
 $estilo=array();
-//$estilo[$indice++]="default.css";
+$estilo[$indice++]="estiloHome.css";
 
 $rutaBloque=$this->miConfigurador->getVariableConfiguracion("host");
 $rutaBloque.=$this->miConfigurador->getVariableConfiguracion("site");

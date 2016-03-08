@@ -14,7 +14,7 @@ $rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloqu
       </div>
       <div class="col-sm-6">
         <h1>Notificaciones</h1>
-        <img src="<?php echo $rutaUrlBloque.'images/notificaciones.png'?>" alt="Perfil" class="img-responsive img-rounded" style="width:100%;" />
+       		<img src="<?php echo $rutaUrlBloque.'images/notificaciones.png'?>" alt="Perfil" class="img-responsive img-rounded" style="width:100%;" />
       </div>
     </div>
     <!-- /.row -->
