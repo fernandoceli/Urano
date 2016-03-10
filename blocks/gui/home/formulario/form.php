@@ -81,6 +81,8 @@ class Formulario {
 		
 		// ---------------- SECCION: Controles del Formulario -----------------------------------------------
 		
+		$_REQUEST ['usuario'] = '6666';
+		
 		$rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloque" );
 		
 		?>
@@ -98,8 +100,9 @@ class Formulario {
 		</div>
 		<div class="col-sm-6">
 			<h1>Notificaciones</h1>
-      		 <img src="<?php echo $rutaUrlBloque.'images/notificaciones.png'?>" alt="Perfil" class="img-responsive img-rounded" style="width:100%;" />
-      </div>
+			<img src="<?php echo $rutaUrlBloque.'images/notificaciones.png'?>"
+				alt="Perfil" class="img-responsive img-rounded" style="width: 100%;" />
+		</div>
 	</div>
 	<!-- /.row -->
 
@@ -159,14 +162,13 @@ class Formulario {
 		</div>
 		<div class="col-sm-6">
 			<h1>Noticias</h1>
-			 <?php
+
+			<!-- prueba-plugin noticias -->
+	
+	<?php
 		
 		$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "buscarNoticias", $usuario );
 		$matrizNoticias = $esteRecurso->ejecutarAcceso ( $atributos ['cadena_sql'], "busqueda" );
-		
-		// var_dump($matrizNoticias);
-		
-		// echo "aqui estamos";
 		
 		$esteCampo = 'noticias';
 		$atributos ['id'] = $esteCampo;
@@ -176,36 +178,82 @@ class Formulario {
 		
 		echo "<hr>";
 		
+		$esteCampo = "noti";
+		$atributos ['id'] = $esteCampo;
+		$atributos ['estilo'] = "demo2 demof";
+		echo $this->miFormulario->division ( "inicio", $atributos );
+		unset ( $atributos );
+		
+		echo "<ul>";
+		
 		foreach ( $matrizNoticias as $noticia ) {
-			$atributos ['id'] = '';
-			$atributos ['estilo'] = 'noticia_index';
-			echo $this->miFormulario->division ( "inicio", $atributos );
-			unset ( $atributos );
 			
-			echo "<FONT COLOR=RED>" . $noticia ['nombre'] . " <br> </FONT>";
+			echo "<li>";
 			
+			echo "<img src=" . $rutaUrlBloque . "images/silueta.gif alt='Imagen del usuario'>";
+			
+			$atributos ['enlace'] = "#";
+			$atributos ['enlaceTexto'] = $noticia ['nombre'];
+			echo $this->miFormulario->enlace ( $atributos );
+			
+			echo "<p>";
+
 			$aux = $noticia ['descripcion'];
 			
 			if ($noticia ['enlace']) {
-				$aux = str_replace ( "[", "<a href='" . $noticia['enlace'] . "'>", $aux );
+				$aux = str_replace ( "[", "<a id='enlaceinterno' href='" . $noticia ['enlace'] . "'>", $aux );
 			} else {
-				$aux = str_replace ( "[", "<a href=''>", $aux );
+				if ($noticia ['prev']) {
+					$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "buscarPrev", $noticia ['prev'] );
+					$matrizPrev = $esteRecurso->ejecutarAcceso ( $atributos ['cadena_sql'], "busqueda" );
+					
+					$cadena = "<a id='enlaceinterno' ";
+					
+					if (isset ( $matrizPrev [0] ['sale'] )) {
+						$cadena .= 'onmouseout="' . $matrizPrev [0] ['sale'] . '" ';
+					}
+					
+					if (isset ( $matrizPrev [0] ['entra'] )) {
+						$entra = $matrizPrev [0] ['entra'];
+						$entra = str_replace ( 'img/', $rutaUrlBloque . 'images/', $entra );
+						$cadena .= 'onmouseover="' . $entra . '" ';
+					}
+					
+					if (isset ( $matrizPrev [0] ['mueve'] )) {
+						$cadena .= 'onmousemove="' . $matrizPrev [0] ['mueve'] . '" ';
+					}
+					
+					$cadena .= 'href="" >';
+					
+					$aux = str_replace ( "[", $cadena, $aux );
+				} else {
+					$aux = str_replace ( "[", "<a href=''>", $aux );
+				}
 			}
 			$aux = str_replace ( "]", "</a>", $aux );
 			
 			echo $aux;
 			
-			echo "<hr>";
+			echo "</p>";
 			
-			echo $this->miFormulario->division ( "fin" );
+			echo "</li>";
 		}
+		
+		echo "</ul>";
 		
 		echo $this->miFormulario->division ( "fin" );
 		
 		?>
-		</div>
+		
 	</div>
-	<!-- /.row -->
+		<!-- col -->
+
+	</div>
+	<!-- fin prueba plugin -->
+
+</div>
+</div>
+<!-- /.row -->
 
 </div>
 <!-- /.container -->

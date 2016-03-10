@@ -109,11 +109,30 @@ class Sql extends \Sql {
 				$cadenaSql = "SELECT ";
 				$cadenaSql .= "nombre, ";
 				$cadenaSql .= "descripcion, ";
-				$cadenaSql .= "enlace ";
+				$cadenaSql .= "enlace, ";
+				$cadenaSql .= "tipo, ";
+				$cadenaSql .= "anio, ";
+				$cadenaSql .= "periodo, ";
+				$cadenaSql .= "prev ";
 				$cadenaSql .= "FROM general.noticias ";
 				$cadenaSql .= "WHERE estado=1 ";
 				$cadenaSql .= "OR now()::date BETWEEN fecha_inicio AND fecha_fin ";
-				$cadenaSql .= "ORDER BY id_noticia, id_tipo";
+				$cadenaSql .= "ORDER BY id_noticia, tipo";
+// 				echo $cadenaSql;
+				break;
+
+			case 'buscarPrev':
+				$cadenaSql = "SELECT ";
+				$cadenaSql .= "onmouseout AS sale, ";
+				$cadenaSql .= "onmouseover AS entra, ";
+				$cadenaSql .= "onmousemove AS mueve ";
+				$cadenaSql .= "FROM general.previsualizacion ";
+				$cadenaSql .= "WHERE id_prev=" . $variable . "; ";
+				break;
+		}
+		
+		if (!isset($cadenaSql)) {
+			echo "No se encontro la sentencia: '" . $tipo . "'";
 		}
 		
 		return $cadenaSql;
