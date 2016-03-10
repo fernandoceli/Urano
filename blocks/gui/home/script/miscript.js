@@ -1,3 +1,0 @@
-/* Author:
-JORGE ULISES USECHE CUELLAR
-*/

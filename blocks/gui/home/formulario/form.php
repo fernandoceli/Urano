@@ -188,16 +188,18 @@ class Formulario {
 		
 		foreach ( $matrizNoticias as $noticia ) {
 			
+// 			echo "<li onmouseover='changeover(this);' onmouseout='changeout(this);'>";
 			echo "<li>";
 			
 			echo "<img src=" . $rutaUrlBloque . "images/silueta.gif alt='Imagen del usuario'>";
 			
+			$atributos ['id'] = 'enlacetitulo';
 			$atributos ['enlace'] = "#";
 			$atributos ['enlaceTexto'] = $noticia ['nombre'];
 			echo $this->miFormulario->enlace ( $atributos );
 			
-			echo "<p>";
-
+			echo "<p id='texto'>";
+			
 			$aux = $noticia ['descripcion'];
 			
 			if ($noticia ['enlace']) {
@@ -209,19 +211,19 @@ class Formulario {
 					
 					$cadena = "<a id='enlaceinterno' ";
 					
-					if (isset ( $matrizPrev [0] ['sale'] )) {
-						$cadena .= 'onmouseout="' . $matrizPrev [0] ['sale'] . '" ';
-					}
+					// if (isset ( $matrizPrev [0] ['sale'] )) {
+					// $cadena .= 'onmouseout="' . $matrizPrev [0] ['sale'] . '" ';
+					// }
 					
-					if (isset ( $matrizPrev [0] ['entra'] )) {
-						$entra = $matrizPrev [0] ['entra'];
-						$entra = str_replace ( 'img/', $rutaUrlBloque . 'images/', $entra );
-						$cadena .= 'onmouseover="' . $entra . '" ';
-					}
+					// if (isset ( $matrizPrev [0] ['entra'] )) {
+					// $entra = $matrizPrev [0] ['entra'];
+					// $entra = str_replace ( 'img/', $rutaUrlBloque . 'images/', $entra );
+					// $cadena .= 'onmouseover="' . $entra . '" ';
+					// }
 					
-					if (isset ( $matrizPrev [0] ['mueve'] )) {
-						$cadena .= 'onmousemove="' . $matrizPrev [0] ['mueve'] . '" ';
-					}
+					// if (isset ( $matrizPrev [0] ['mueve'] )) {
+					// $cadena .= 'onmousemove="' . $matrizPrev [0] ['mueve'] . '" ';
+					// }
 					
 					$cadena .= 'href="" >';
 					
@@ -233,6 +235,25 @@ class Formulario {
 			$aux = str_replace ( "]", "</a>", $aux );
 			
 			echo $aux;
+			
+			echo "</p>";
+			
+			echo "<p id='fecha'>";
+			
+			$auxfecha = $noticia ['fercha_radicacion'];
+			
+			$auxfecha = explode(" ", $auxfecha);
+			
+			$auxfecha2 = $auxfecha[0];
+			
+			$auxfecha2 = explode("-", $auxfecha2);
+			
+			$f['anio'] = $auxfecha2[0];
+			$f['mes'] = $auxfecha2[1];
+			$f['dia'] = $auxfecha2[2];
+			$f['hora'] = $auxfecha[1];
+			
+			echo fecha_es($f);
 			
 			echo "</p>";
 			
@@ -349,4 +370,22 @@ class Formulario {
 $miFormulario = new Formulario ( $this->lenguaje, $this->miFormulario, $this->sql );
 $miFormulario->formulario ();
 $miFormulario->mensaje ();
+
+function fecha_es($fecha) {
+	$meses = array (
+			'01' => 'Enero',
+			'02' => 'Febrero',
+			'03' => 'Marzo',
+			'04' => 'Abril',
+			'05' => 'Mayo',
+			'06' => 'Junio',
+			'07' => 'Julio',
+			'08' => 'Agosto',
+			'09' => 'Septiembre',
+			'10' => 'Octubre',
+			'11' => 'Noviembre',
+			'12' => 'Diciembre'
+	);
+	return $meses[$fecha['mes']] . " " . $fecha['dia'] . ", " . $fecha['anio'] . " - " . $fecha['hora'];
+}
 ?>
