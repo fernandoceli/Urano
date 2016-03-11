@@ -9,6 +9,8 @@
 }
 
 #foto-noti {
+	height: 100px;
+	width: 100px; 
 	border-radius: 50%;
 	-webkit-border-radius: 150px;
 	-moz-border-radius: 150px;
@@ -18,7 +20,6 @@
 }
 
 #enlacetitulo {
-	color: RED;
 	font-family: inherit;
     line-height: 1;
     text-align: center;

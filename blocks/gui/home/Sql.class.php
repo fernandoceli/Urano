@@ -114,7 +114,9 @@ class Sql extends \Sql {
 				$cadenaSql .= "anio, ";
 				$cadenaSql .= "periodo, ";
 				$cadenaSql .= "prev, ";
-				$cadenaSql .= "fercha_radicacion ";
+				$cadenaSql .= "fercha_radicacion, ";
+				$cadenaSql .= "nombre_usr_remi, ";
+				$cadenaSql .= "img_usr_enlace ";
 				$cadenaSql .= "FROM general.noticias ";
 				$cadenaSql .= "WHERE estado=1 ";
 				$cadenaSql .= "OR now()::date BETWEEN fecha_inicio AND fecha_fin ";
