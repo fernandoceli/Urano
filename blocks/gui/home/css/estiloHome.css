@@ -5,10 +5,23 @@
 	height: 457px; 
 	overflow: hidden; 
 	display: block;
+	background-image: url("../images/fondo_escudo_titulo2.png");
+}
+
+#foto-noti {
+	border-radius: 50%;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
+	box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
 }
 
 #enlacetitulo {
 	color: RED;
+	font-family: inherit;
+    line-height: 1;
+    text-align: center;
 }
 
 #enlaceinterno {
@@ -21,6 +34,7 @@
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 16px;
     line-height: 1.1;
+    text-align: justify;
 }
 
 #fecha {
@@ -54,12 +68,12 @@
 .demof img{
 	float: left;
 	width: 100px;
-	margin: 7px 11px 0 0;
+	margin: 5px 15px 0 0;
 }
 .demof a{
-	font-family: serif, sans-serif;
-	font-size: 17px;
-	font-weight: bolder;
+	font-family: Arial, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
 	color: #06f;
 }
 .demof p {

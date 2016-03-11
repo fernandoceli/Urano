@@ -1,6 +1,6 @@
 <?php
 
 
-$this->idioma ['noDefinido'] = 'No definido';
+$this->idioma ['noDefinido'] = '';
 $this->idioma["accesoIncorrecto"] = "";
 ?>
