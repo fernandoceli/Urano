@@ -1,3 +1,5 @@
+
+
 $(function() {
 	$('.demo1').easyTicker({
 		direction : 'up'
@@ -5,8 +7,6 @@ $(function() {
 
 	$('.demo2').easyTicker({
 		direction : 'down',
-		interval : 2000,
-		speed : 'slow',
 	});
 
 	$('.demo3').easyTicker({

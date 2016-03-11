@@ -21,9 +21,9 @@ $funcion = array ();
 // $funcion[$indice++]="jquery_002.js";
 // $funcion[$indice++]="easy-ticker.js";
 // $funcion[$indice++]="jquery.min.js";
+$funcion [$indice ++] = "jquery.easing.min.js";
 $funcion [$indice ++] = "jquery.easy-ticker.js";
 // $funcion[$indice++]="jquery.easy-ticker.min.js";
-$funcion [$indice ++] = "jquery.easing.min.js";
 
 $rutaBloque = $this->miConfigurador->getVariableConfiguracion ( "host" );
 $rutaBloque .= $this->miConfigurador->getVariableConfiguracion ( "site" );

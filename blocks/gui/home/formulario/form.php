@@ -170,6 +170,8 @@ class Formulario {
 		$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "buscarNoticias", $usuario );
 		$matrizNoticias = $esteRecurso->ejecutarAcceso ( $atributos ['cadena_sql'], "busqueda" );
 		
+// 		var_dump($matrizNoticias);
+		
 		$esteCampo = 'noticias';
 		$atributos ['id'] = $esteCampo;
 		$atributos ['estiloEnLinea'] = 'width: 100%; height: 90%; overflow-y: scroll;';
@@ -203,7 +205,7 @@ class Formulario {
 			$aux = $noticia ['descripcion'];
 			
 			if ($noticia ['enlace']) {
-				$aux = str_replace ( "[", "<a id='enlaceinterno' href='" . $noticia ['enlace'] . "'>", $aux );
+				$aux = str_replace ( "[", "<a id='enlaceinterno' href='" . rtrim($noticia ['enlace']) . "'>", $aux );
 			} else {
 				if ($noticia ['prev']) {
 					$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "buscarPrev", $noticia ['prev'] );
