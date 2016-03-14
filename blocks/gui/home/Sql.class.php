@@ -113,11 +113,10 @@ class Sql extends \Sql {
 				$cadenaSql .= "tipo, ";
 				$cadenaSql .= "anio, ";
 				$cadenaSql .= "periodo, ";
-				$cadenaSql .= "prev, ";
 				$cadenaSql .= "fercha_radicacion, ";
 				$cadenaSql .= "nombre_usr_remi, ";
 				$cadenaSql .= "img_usr_enlace ";
-				$cadenaSql .= "FROM general.noticias ";
+				$cadenaSql .= "FROM general.noticia ";
 				$cadenaSql .= "WHERE estado=1 ";
 				$cadenaSql .= "OR now()::date BETWEEN fecha_inicio AND fecha_fin ";
 				$cadenaSql .= "ORDER BY fercha_radicacion DESC";

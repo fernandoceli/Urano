@@ -184,90 +184,70 @@ class Formulario {
 		
 		echo "<ul>";
 		
-		foreach ( $matrizNoticias as $noticia ) {
+		// var_dump($matrizNoticias);
+		
+		if ($matrizNoticias) {
 			
-			echo "<li>";
-			
-			$pordefecto = $rutaUrlBloque . "images/silueta.gif";
-			
-			$imagen = "<img id='foto-noti' ";
-			
-			if ($noticia['img_usr_enlace']) {
-				$imagen .= "src=" . $rutaUrlBloque . "images/" . trim($noticia['img_usr_enlace']) . "";	
-			} else {
-				$imagen .= "src=" . $pordefecto;				
-			}
-			
-			$imagen .= " alt='" . $noticia['nombre_usr_remi'] . "' title='" . $noticia['nombre_usr_remi'] . "'>";
-			
-			echo $imagen;
-			
-			$atributos ['id'] = 'enlacetitulo';
-			$atributos ['enlace'] = "#";
-			$atributos ['enlaceTitulo'] = "Prueba";
-			$atributos ['enlaceTexto'] = $noticia ['nombre'];
-			echo $this->miFormulario->enlace ( $atributos );
-			
-			echo "<p id='texto'>";
-			
-			$aux = trim ( $noticia ['descripcion'] );
-			
-			if ($noticia ['enlace']) {
-				$aux = str_replace ( "[", "<a id='enlaceinterno' href='" . trim ( $noticia ['enlace'] ) . "'>", $aux );
-			} else {
-				if ($noticia ['prev']) {
-					$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "buscarPrev", trim ( $noticia ['prev'] ) );
-					$matrizPrev = $esteRecurso->ejecutarAcceso ( $atributos ['cadena_sql'], "busqueda" );
-					
-					$cadena = "<a id='enlaceinterno' ";
-					
-					// if (isset ( $matrizPrev [0] ['sale'] )) {
-					// $cadena .= 'onmouseout="' . $matrizPrev [0] ['sale'] . '" ';
-					// }
-					
-					// if (isset ( $matrizPrev [0] ['entra'] )) {
-					// $entra = $matrizPrev [0] ['entra'];
-					// $entra = str_replace ( 'img/', $rutaUrlBloque . 'images/', $entra );
-					// $cadena .= 'onmouseover="' . $entra . '" ';
-					// }
-					
-					// if (isset ( $matrizPrev [0] ['mueve'] )) {
-					// $cadena .= 'onmousemove="' . $matrizPrev [0] ['mueve'] . '" ';
-					// }
-					
-					$cadena .= 'href="" >';
-					
-					$aux = str_replace ( "[", $cadena, $aux );
+			foreach ( $matrizNoticias as $noticia ) {
+				
+				echo "<li>";
+				
+				$pordefecto = $rutaUrlBloque . "images/silueta.gif";
+				
+				$imagen = "<img id='foto-noti' ";
+				
+				if ($noticia ['img_usr_enlace']) {
+					$imagen .= "src=" . $rutaUrlBloque . "images/" . trim ( $noticia ['img_usr_enlace'] ) . "";
 				} else {
-					$aux = str_replace ( "[", "<a href=''>", $aux );
+					$imagen .= "src=" . $pordefecto;
 				}
+				
+				$imagen .= " alt='" . $noticia ['nombre_usr_remi'] . "' title='" . $noticia ['nombre_usr_remi'] . "'>";
+				
+				echo $imagen;
+				
+				$atributos ['id'] = 'enlacetitulo';
+				$atributos ['enlace'] = "#";
+				$atributos ['enlaceTitulo'] = "Prueba";
+				$atributos ['enlaceTexto'] = $noticia ['nombre'];
+				echo $this->miFormulario->enlace ( $atributos );
+				
+				echo "<p id='texto'>";
+				
+				$descrip = trim ( $noticia ['descripcion'] );
+				
+				if ($noticia ['enlace']) {
+					$descrip = str_replace ( "[", "<a id='enlaceinterno' href='" . trim ( $noticia ['enlace'] ) . "'>", $descrip );
+				} else {
+					$descrip = str_replace ( "[", "<a id='enlaceinterno' href=''>", $descrip );
+				}
+				$descrip = str_replace ( "]", "</a>", $descrip );
+				
+				echo $descrip;
+				
+				echo "</p>";
+				
+				echo "<p id='fecha'>";
+				
+				$auxfecha = trim ( $noticia ['fercha_radicacion'] );
+				
+				$auxfecha = explode ( " ", $auxfecha );
+				
+				$auxfecha2 = $auxfecha [0];
+				
+				$auxfecha2 = explode ( "-", $auxfecha2 );
+				
+				$f ['anio'] = $auxfecha2 [0];
+				$f ['mes'] = $auxfecha2 [1];
+				$f ['dia'] = $auxfecha2 [2];
+				$f ['hora'] = $auxfecha [1];
+				
+				echo fecha_es ( $f );
+				
+				echo "</p>";
+				
+				echo "</li>";
 			}
-			$aux = str_replace ( "]", "</a>", $aux );
-			
-			echo $aux;
-			
-			echo "</p>";
-			
-			echo "<p id='fecha'>";
-			
-			$auxfecha = trim ( $noticia ['fercha_radicacion'] );
-			
-			$auxfecha = explode ( " ", $auxfecha );
-			
-			$auxfecha2 = $auxfecha [0];
-			
-			$auxfecha2 = explode ( "-", $auxfecha2 );
-			
-			$f ['anio'] = $auxfecha2 [0];
-			$f ['mes'] = $auxfecha2 [1];
-			$f ['dia'] = $auxfecha2 [2];
-			$f ['hora'] = $auxfecha [1];
-			
-			echo fecha_es ( $f );
-			
-			echo "</p>";
-			
-			echo "</li>";
 		}
 		
 		echo "</ul>";
@@ -380,6 +360,7 @@ class Formulario {
 $miFormulario = new Formulario ( $this->lenguaje, $this->miFormulario, $this->sql );
 $miFormulario->formulario ();
 $miFormulario->mensaje ();
+
 function fecha_es($fecha) {
 	$meses = array (
 			'01' => 'Enero',

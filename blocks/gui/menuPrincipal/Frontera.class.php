@@ -46,16 +46,20 @@ class Frontera{
 		$this->funcion=$funcion;
 	}
 
-	function html()
-	{
-		
-		include_once("core/builder/FormularioHtml.class.php");
-		
-		$this->ruta=$this->miConfigurador->getVariableConfiguracion("rutaBloque");
-		
-		$this->miFormulario=new \FormularioHtml();
-		include_once($this->ruta."/formulario/nav.html.php");	
+	function html() 	{
 
-	}
+        include_once ("core/builder/FormularioHtml.class.php");
+
+        $this->ruta = $this->miConfigurador->getVariableConfiguracion ( "rutaBloque" );
+        $this->miFormulario = new \FormularioHtml ();
+
+        $miBloque = $this->miConfigurador->getVariableConfiguracion ( 'esteBloque' );
+        $resultado = $this->miConfigurador->getVariableConfiguracion ( 'errorFormulario' );
+		/*
+		 * Se llama al formulario de SARA Form Creator
+		 */
+        include_once ($this->ruta . "/formulario/nuevo.php");
+
+    }
 }
 ?>

@@ -4,7 +4,7 @@ $funcion = array ();
 
 $funcion [$indice ++] = "jquery.easy-ticker.js";
 $funtion [$indice ++] = "jquery.easing.min.js";
-$funtion [$indice ++] = "jquery.easy-ticker.min.js";
+// $funtion [$indice ++] = "jquery.easy-ticker.min.js";
 
 $rutaBloque = $this->miConfigurador->getVariableConfiguracion ( "host" );
 $rutaBloque .= $this->miConfigurador->getVariableConfiguracion ( "site" );
@@ -28,5 +28,7 @@ if (isset ( $funcion [0] )) {
 		}
 	}
 }
+
+// include 'ajaax.php';
 
 ?>
