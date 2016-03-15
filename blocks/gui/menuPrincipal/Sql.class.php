@@ -150,6 +150,21 @@ function getCadenaSql($tipo, $variable = "") {
             $cadenaSql .= "id_sesion='" . $idSesion . "'";
             break;
             
+        case 'buscarNotificaciones':
+        	$cadenaSql = "SELECT ";
+        	$cadenaSql .= "notifi_titulo AS titulo, ";
+        	$cadenaSql .= "notifi_conte AS contenido, ";
+        	$cadenaSql .= "notifi_enlace AS enlace, ";
+        	$cadenaSql .= "notifi_usr_emisor AS emisor, ";
+        	$cadenaSql .= "notifi_fecha_crea AS fecha, ";
+        	$cadenaSql .= "notifi_estado AS estado ";
+        	$cadenaSql .= "FROM general.notificacion ";
+        	$cadenaSql .= "WHERE notifi_estado<>'0' ";
+        	$cadenaSql .= "AND notifi_usr_receptor=" . $variable . " ";
+        	$cadenaSql .= "ORDER BY notifi_fecha_crea; ";
+//         	echo $cadenaSql;
+        	break;
+            
             
             /**
          * Clausulas Menú.

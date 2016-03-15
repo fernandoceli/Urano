@@ -1,5 +1,13 @@
 <!-- 
 
+.formulario {
+	position: relative;
+}
+
+#container {
+    position: relative;
+}
+
 #noti {
 	position: relative; 
 	height: 457px; 
@@ -43,7 +51,7 @@
 }
 
 .demof{
-	margin: 25px 0;
+	margin: 0px 0;
 }
 .demof ul{
 	padding: 0;
