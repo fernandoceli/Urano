@@ -107,19 +107,19 @@ class Sql extends \Sql {
 				
 			case 'buscarNoticias':
 				$cadenaSql = "SELECT ";
-				$cadenaSql .= "nombre, ";
-				$cadenaSql .= "descripcion, ";
-				$cadenaSql .= "enlace, ";
-				$cadenaSql .= "tipo, ";
-				$cadenaSql .= "anio, ";
-				$cadenaSql .= "periodo, ";
-				$cadenaSql .= "fercha_radicacion, ";
-				$cadenaSql .= "nombre_usr_remi, ";
-				$cadenaSql .= "img_usr_enlace ";
+				$cadenaSql .= "noti_nombre, ";
+				$cadenaSql .= "noti_descripcion, ";
+				$cadenaSql .= "noti_enlace, ";
+				$cadenaSql .= "noti_tipo, ";
+				$cadenaSql .= "noti_anio, ";
+				$cadenaSql .= "noti_periodo, ";
+				$cadenaSql .= "noti_fradicacion, ";
+				$cadenaSql .= "noti_usr_remi, ";
+				$cadenaSql .= "noti_img_usr_enlace ";
 				$cadenaSql .= "FROM general.noticia ";
-				$cadenaSql .= "WHERE estado=1 ";
-				$cadenaSql .= "OR now()::date BETWEEN fecha_inicio AND fecha_fin ";
-				$cadenaSql .= "ORDER BY fercha_radicacion DESC";
+				$cadenaSql .= "WHERE noti_estado=1 ";
+				$cadenaSql .= "OR now()::date BETWEEN noti_finicio AND noti_ffin ";
+				$cadenaSql .= "ORDER BY noti_fradicacion DESC";
 // 				echo $cadenaSql;
 				break;
 

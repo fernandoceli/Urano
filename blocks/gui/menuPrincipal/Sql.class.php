@@ -152,16 +152,19 @@ function getCadenaSql($tipo, $variable = "") {
             
         case 'buscarNotificaciones':
         	$cadenaSql = "SELECT ";
+        	$cadenaSql .= "id_notifi, ";
         	$cadenaSql .= "notifi_titulo AS titulo, ";
         	$cadenaSql .= "notifi_conte AS contenido, ";
         	$cadenaSql .= "notifi_enlace AS enlace, ";
         	$cadenaSql .= "notifi_usr_emisor AS emisor, ";
         	$cadenaSql .= "notifi_fecha_crea AS fecha, ";
+        	$cadenaSql .= "img_tipo AS imagen, ";
         	$cadenaSql .= "notifi_estado AS estado ";
         	$cadenaSql .= "FROM general.notificacion ";
+        	$cadenaSql .= "JOIN general.tipo_notifi ON notifi_tipo=id_tipo ";
         	$cadenaSql .= "WHERE notifi_estado<>'0' ";
         	$cadenaSql .= "AND notifi_usr_receptor=" . $variable . " ";
-        	$cadenaSql .= "ORDER BY notifi_fecha_crea; ";
+        	$cadenaSql .= "ORDER BY notifi_fecha_crea DESC; ";
 //         	echo $cadenaSql;
         	break;
             

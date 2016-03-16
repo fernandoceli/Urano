@@ -1,10 +1,29 @@
 
+#notifi-titulo {
+	font-size: 15px;
+}
+
+#texto-notificacion {
+	float: right !important;
+}
+
 .texto-notifi {
 	color: black !important;
 }
 
+.notifi {
+	border-bottom: 1px solid #dddddd;
+	cursor: pointer;
+}
+
+.notifi:HOVER {
+	background-color: #fafafa;
+}
+
 .imagen-notifi {
-	float: left;
+	width: 60px;
+	height: 60px;
+	padding: 10px 10px 10px 10px;
 }
 
 .info-notifi {
@@ -23,6 +42,7 @@
 	font-weight: normal;
 	text-align: right;
 	font-size: 11px !important;
+	float: right;
 }
 
 #menu {
@@ -30,12 +50,12 @@
 }
 
 .li-notificacion {
-	list-style:none !important; 
+	list-style: none !important;
 	margin-left: -30px;
 	margin-right: 0px;
 	font-size: 15px !important;
-    font-weight: lighter !important;
-    line-height: 1.1 !important;
+	font-weight: lighter !important;
+	line-height: 1.1 !important;
 }
 
 #nav {
@@ -57,7 +77,7 @@
 
 #nav li a:hover {
 	color: #006699;
-	text-decoration: none
+	text-decoration: none;
 }
 
 #notification_li {
@@ -65,7 +85,20 @@
 }
 
 #notificationLink {
-	color: #cc0000;
+	font-family: arial, sans-serif !important;
+	font-weight: normal !important;
+	transition-delay: 1s;
+	transition: 4s;
+}
+
+#notificationLink:hover {
+    color: red !important;
+    letter-spacing: 0.15px;
+}
+
+
+#notification_li:hover {
+	background-color: transparent !important;
 }
 
 #notificationContainer {
@@ -102,17 +135,17 @@
 	width: 384px;
 	border-bottom: 1px solid #dddddd;
 	text-align: center;
-	font-family: arial,sans-serif !important;
+	font-family: arial, sans-serif !important;
 }
 
 #notificationsBody {
-	padding: 5px 0px 0px 0px !important;
+	padding: 0px 0px 0px 0px !important;
 	min-height: 300px;
 	max-height: 360px;
-	overflow-y:scroll;
-	font-family: arial,sans-serif !important;
-    margin: 0;
-    color: black !important;
+	overflow-y: scroll;
+	font-family: arial, sans-serif !important;
+	margin: 0;
+	color: black !important;
 }
 
 #notificationFooter {
@@ -133,67 +166,11 @@
 	float: right;
 	margin-top: -7px;
 	margin-left: 0px;
-	font-size: 11px;	
+	font-size: 11px;
+	transition: 2s;
+	cursor: pointer;
 }
 
-
-
-.notifications-dropdown #event-feed-container #event-feed .feed-image .feed-thumbnail
-	{
-	height: 32px;
-	width: 32px
+#notification_count:hover {
+	transform: scale(2);
 }
-
-.notifications-dropdown #event-feed-container #event-feed .feed-image .feed-thumbnail.has-frame img
-	{
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 0 0 #000;
-	border: 1px #B1B1B1 solid;
-	height: 28px;
-	width: 28px;
-	margin-left: 1px
-}
-
-.notifications-dropdown #event-feed-container #event-feed .feed-image .feed-thumbnail .shared-folder-badge
-	{
-	bottom: 19px;
-	height: 13px;
-	left: 20px;
-	position: relative;
-	width: 12px
-}
-
-.notifications-dropdown #event-feed-container #event-feed .feed-image .profile-pic
-	{
-	width: 36px
-}
-
-.notifications-dropdown #event-feed-container #event-feed .feed-text {
-	cursor: inherit;
-	margin-left: 44px;
-	word-wrap: break-word
-}
-
-.notifications-dropdown #event-feed-container #event-feed .feed-text strong
-	{
-	-webkit-hyphens: auto;
-	-moz-hyphens: auto;
-	-ms-hyphens: auto;
-	hyphens: auto;
-	hyphenate-limit-before: 12;
-	font-weight: 600
-}
-
-.notifications-dropdown #event-feed-container #event-feed .feed-time {
-	color: #aaa;
-	display: block;
-	margin-left: 44px;
-	font-size: 11px
-}
-
-.notifications-dropdown #event-feed-container #event-feed .feed-image {
-	float: left;
-	margin-top: 2px
-}
-
-
-

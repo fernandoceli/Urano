@@ -1,6 +1,6 @@
 <?php
 
-namespace gui\accesoIncorrecto;
+namespace gui\menuPrincipal;
 
 if (! isset ( $GLOBALS ["autorizado"] )) {
 	include ("../index.php");
@@ -81,155 +81,132 @@ class Formulario {
 		
 		// ---------------- SECCION: Controles del Formulario -----------------------------------------------
 		
-		$_REQUEST ['usuario'] = '6666';
-		
 		$rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloque" );
+		
+		$_REQUEST ['usuario'] = '6666';
 		
 		?>
 
-<!-- Page Content -->
-<div class="container">
+<nav class="navbar" role="navigation">
+	<div id="imagenfondo" class="navbar"></div>
+	<!--navbar-fixed-top-->
+	<div class="container">
+		<!-- Image Background Page Header -->
+		<!-- Note: The background image is set within the business-casual.css file. -->
+		<header class="business-header">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-2">
+						<img src="<?php echo $rutaUrlBloque.'images/escudo.png'?>"
+							alt="Perfil"
+							class="hidden-xs hidden-sm img-responsive img-rounded escudo" />
+					</div>
+					<div class="col-xs-12 col-sm-10 col-lg-8">
+						<h1 class="nameline">JORGE ULISES USECHE CUELLAR</h1>
+						<h1 class="titleline">Msc. Teleinformática</h1>
 
-	<hr>
-
-	<div class="row">
-		<div class="col-sm-6">
-			<h1>Horario Clase</h1>
-			<img src="<?php echo $rutaUrlBloque.'images/horario.png'?>"
-				alt="Perfil" class="img-responsive img-rounded" style="width: 100%;" />
-		</div>
-		<div class="col-sm-6">
-			<h1>Notificaciones</h1>
-			<img src="<?php echo $rutaUrlBloque.'images/notificaciones.png'?>"
-				alt="Perfil" class="img-responsive img-rounded" style="width: 100%;" />
-		</div>
-	</div>
-	<!-- /.row -->
-
-	<div class="row">
-		<div class="col-sm-6">
-			<h1>Servicios más usados</h1>
-			<div class="row text-center">
-				<div class="col-xs-4">
-					<img src="<?php echo $rutaUrlBloque.'images/mi_plan_trabajo.png'?>"
-						alt="Perfil" class="img-responsive" style="width: 100%;" />
-					<h3 class="hidden-xs">Mi plan de Trabajo</h3>
-					<h5 class="hidden-sm hidden-md hidden-lg">Mi plan de Trabajo</h5>
-					<hr>
-				</div>
-				<div class="col-xs-4">
-					<img src="<?php echo $rutaUrlBloque.'images/asignaturas.png'?>"
-						alt="Perfil" class="img-responsive" style="width: 100%;" />
-					<h3 class="hidden-xs">Asignaturas</h3>
-					<h5 class="hidden-sm hidden-md hidden-lg">Asignaturas</h5>
-					<hr>
-				</div>
-				<div class="col-xs-4">
-					<img
-						src="<?php echo $rutaUrlBloque.'images/resultados_evaluacion.png'?>"
-						alt="Perfil" class="img-responsive" style="width: 100%;" />
-					<h3 class="hidden-xs">Resultados Evaluación</h3>
-					<h5 class="hidden-sm hidden-md hidden-lg">Resultados Evaluación</h5>
-					<hr>
-				</div>
-			</div>
-			<!-- /.row -->
-			<div class="row text-center">
-				<div class="col-xs-4">
-					<img
-						src="<?php echo $rutaUrlBloque.'images/produccion_academica.png'?>"
-						alt="Perfil" class="img-responsive" style="width: 100%;" />
-					<h3 class="hidden-xs">Producción Académica</h3>
-					<h5 class="hidden-sm hidden-md hidden-lg">Producción Académica</h5>
-					<hr>
-				</div>
-				<div class="col-xs-4">
-					<img src="<?php echo $rutaUrlBloque.'images/autoevaluacion.png'?>"
-						alt="Perfil" class="img-responsive" style="width: 100%;" />
-					<h3 class="hidden-xs">Autoevaluación</h3>
-					<h5 class="hidden-sm hidden-md hidden-lg">Autoevaluación</h5>
-					<hr>
-				</div>
-				<div class="col-xs-4">
-					<img src="<?php echo $rutaUrlBloque.'images/lista_clase.png'?>"
-						alt="Perfil" class="img-responsive" style="width: 100%;" />
-					<h3 class="hidden-xs">Lista de Clase</h3>
-					<h5 class="hidden-sm hidden-md hidden-lg">Lista de Clase</h5>
-					<hr>
-				</div>
-			</div>
-			<!-- /.row -->
-		</div>
-		<div class="col-sm-6">
-			<h1>Noticias</h1>
-
-			<!-- prueba-plugin noticias -->
-	
-	<?php
+						<!--  -->
+						<?php
 		
-		$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "buscarNoticias", $usuario );
-		$matrizNoticias = $esteRecurso->ejecutarAcceso ( $atributos ['cadena_sql'], "busqueda" );
+		$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "buscarNotificaciones", $_REQUEST ['usuario'] );
+		$matrizNotificaciones = $esteRecurso->ejecutarAcceso ( $atributos ['cadena_sql'], "busqueda" );
 		
-		$esteCampo = 'noticias';
-		$atributos ['id'] = $esteCampo;
-		$atributos ['estiloEnLinea'] = 'width: 100%; height: 90%; overflow-y: scroll;';
+		$cantidadNoti = 0;
+		
+		if ($matrizNotificaciones) {
+			foreach ( $matrizNotificaciones as $notificacion ) {
+				if ($notificacion ['estado'] == 1) {
+					$cantidadNoti ++;
+				}
+			}
+		}
+		
+		?>
+						<ul id="nav">
+							<li id="notification_li">
+							<?php
+		
+		$atributos ['id'] = 'notificationLink';
+		$atributos ['enlace'] = "#";
+		$atributos ['enlaceTitulo'] = "Notificaciones";
+		$atributos ['enlaceTexto'] = "Notificaciones";
+		echo $this->miFormulario->enlace ( $atributos );
+		unset ( $atributos );
+		
+		$atributos ['id'] = "notificationContainer";
 		echo $this->miFormulario->division ( "inicio", $atributos );
 		unset ( $atributos );
 		
-		$esteCampo = "noti";
-		$atributos ['id'] = $esteCampo;
-		$atributos ['estilo'] = "demo2 demof";
+		$atributos ['id'] = "notificationTitle";
 		echo $this->miFormulario->division ( "inicio", $atributos );
 		unset ( $atributos );
 		
-		echo "<ul>";
+		echo "Notificaciones del sistema";
 		
-		// var_dump($matrizNoticias);
+		echo $this->miFormulario->division ( "fin" );
 		
-		if ($matrizNoticias) {
-			
-			foreach ( $matrizNoticias as $noticia ) {
+		$atributos ['id'] = "notificationsBody";
+		$atributos ['estilo'] = "notifications";
+		echo $this->miFormulario->division ( "inicio", $atributos );
+		unset ( $atributos );
+		
+		if (! $matrizNotificaciones) {
+			echo "No hay ninguna notificación registrada para usted.";
+		} else {
+			foreach ( $matrizNotificaciones as $notificacion ) {
 				
-				echo "<li>";
+				// var_dump($matrizNotificaciones);
 				
-				$pordefecto = $rutaUrlBloque . "images/silueta.gif";
+				$num = 86;
 				
-				$imagen = "<img id='foto-noti' ";
-				
-				if ($noticia ['noti_img_usr_enlace']) {
-					$imagen .= "src=" . $rutaUrlBloque . "images/" . trim ( $noticia ['noti_img_usr_enlace'] ) . "";
-				} else {
-					$imagen .= "src=" . $pordefecto;
+				if (strlen(trim($notificacion ['titulo']) . trim($notificacion ['contenido'])) > $num) {
+					$num = strlen(trim($notificacion ['titulo']) . trim($notificacion ['contenido']));
 				}
 				
-				$imagen .= " alt='" . $noticia ['noti_usr_remi'] . "' title='" . $noticia ['noti_usr_remi'] . "'>";
+				$atributos ['id'] = "notificacion" . $notificacion ['id_notifi'];
+				$atributos ['estilo'] = "notifi";
+				$atributos ['estiloEnLinea'] = "height:" . $num . "px";
+				echo $this->miFormulario->division ( "inicio", $atributos );
+				unset ( $atributos );
+												
+				$img = $rutaUrlBloque;
+				
+				if ($notificacion ['imagen']) {
+					$img .= "images/" . trim($notificacion ['imagen']). "'";
+				} else {
+					$img .= "images/notifi-defecto.png'";
+				}
+				
+				$imagen = '<img class="imagen-notifi" ';
+				$imagen .= "src='" . $img . " ";
+				$imagen .= 'alt="">';
 				
 				echo $imagen;
+																
+				$atributos ['id'] = "texto-notificacion";
+				$atributos ['estilo'] = "info-notifi";
+				echo $this->miFormulario->division ( "inicio", $atributos );
+				unset ( $atributos );
 				
-				$atributos ['id'] = 'enlacetitulo';
-				$atributos ['enlace'] = "#";
-				$atributos ['enlaceTitulo'] = "Prueba";
-				$atributos ['enlaceTexto'] = $noticia ['noti_nombre'];
-				echo $this->miFormulario->enlace ( $atributos );
+				$atributos ['id'] = "notifi-titulo";
+				$atributos ['estilo'] = "feed-text";
+				echo $this->miFormulario->division ( "inicio", $atributos );
+				unset ( $atributos );
 				
-				echo "<p id='texto'>";
+				echo trim($notificacion ['titulo']);
 				
-				$descrip = trim ( $noticia ['noti_descripcion'] );
+				echo $this->miFormulario->division ( "fin" );
 				
-				if ($noticia ['noti_enlace']) {
-					$descrip = str_replace ( "[", "<a id='enlaceinterno' href='" . trim ( $noticia ['noti_enlace'] ) . "'>", $descrip );
-				} else {
-					$descrip = str_replace ( "[", "<a id='enlaceinterno' href=''>", $descrip );
-				}
-				$descrip = str_replace ( "]", "</a>", $descrip );
+				$atributos ['id'] = "";
+				$atributos ['estilo'] = "msj-notifi";
+				echo $this->miFormulario->division ( "inicio", $atributos );
+				unset ( $atributos );
 				
-				echo $descrip;
+				echo trim($notificacion ['contenido']);
 				
-				echo "</p>";
+				echo $this->miFormulario->division ( "fin" );
 				
-				echo "<p id='fecha'>";
-				
-				$auxfecha = trim ( $noticia ['noti_fradicacion'] );
+				$auxfecha = trim ( $notificacion ['fecha'] );
 				
 				$auxfecha = explode ( " ", $auxfecha );
 				
@@ -242,34 +219,138 @@ class Formulario {
 				$f ['dia'] = $auxfecha2 [2];
 				$f ['hora'] = $auxfecha [1];
 				
-				echo fecha_es ( $f );
+				$span = '<span class="feed-time">';
+				$span .= fecha_es ( $f );
+				$span .= '</span>';
 				
-				echo "</p>";
+				echo $span;
 				
-				echo "</li>";
+// 				echo "<hr>";
+				
+				echo $this->miFormulario->division ( "fin" );
+				
+				// <!-- FIN PRUEBA -->
+				
+				echo $this->miFormulario->division ( "fin" );
+				
+// 				echo "<hr>";
 			}
 		}
 		
-		echo "</ul>";
-		
 		echo $this->miFormulario->division ( "fin" );
 		
+		echo $this->miFormulario->division ( "fin" );
 		?>
+							</li>
+							<?php
 		
+		if ($cantidadNoti > 0) {
+			$span = '<span id="notification_count">';
+			$span .= $cantidadNoti;
+			$span .= '</span>';
+			
+			echo $span;
+		}
+		
+		?>
+						</ul>
+
+						<br>
+						<!--  -->
+
+						<h1 class="closesession">
+							<a href="#">Cerrar Sesión</a>
+						</h1>
+					</div>
+					<div class="col-lg-2">
+						<img src="<?php echo $rutaUrlBloque.'images/profile.png'?>"
+							alt="Perfil"
+							class="hidden-xs hidden-sm hidden-md img-responsive img-rounded profilepicture" />
+					</div>
+				</div>
+			</div>
+		</header>
+		<!--http://jsfiddle.net/apougher/ydcMQ/-->
+		<div id="menu" class="navbar navbar-default navbar-static-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse"
+						data-target=".navbar-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Inicio</a>
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<!--<li><a href="#">Otro Enlace</a></li>-->
+						<li class="dropdown menu-large"><a href="#"
+							class="dropdown-toggle" data-toggle="dropdown">Categories <b
+								class="caret"></b></a>
+							<ul class="dropdown-menu megamenu row">
+								<li class="col-sm-3">
+									<ul>
+										<li class="dropdown-header">Glyphicons</li>
+										<li><a href="#">Available glyphs</a></li>
+										<li class="disabled"><a href="#">How to use</a></li>
+										<li><a href="#">Examples</a></li>
+										<li class="divider"></li>
+										<li class="dropdown-header">Dropdowns</li>
+										<li><a href="#">Example</a></li>
+										<li><a href="#">Aligninment options</a></li>
+										<li><a href="#">Headers</a></li>
+										<li><a href="#">Disabled menu items</a></li>
+									</ul>
+								</li>
+								<li class="col-sm-3">
+									<ul>
+										<li class="dropdown-header">Button groups</li>
+										<li><a href="#">Basic example</a></li>
+										<li><a href="#">Button toolbar</a></li>
+										<li><a href="#">Sizing</a></li>
+										<li><a href="#">Nesting</a></li>
+										<li><a href="#">Vertical variation</a></li>
+										<li class="divider"></li>
+										<li class="dropdown-header">Button dropdowns</li>
+										<li><a href="#">Single button dropdowns</a></li>
+									</ul>
+								</li>
+								<li class="col-sm-3">
+									<ul>
+										<li class="dropdown-header">Input groups</li>
+										<li><a href="#">Basic example</a></li>
+										<li><a href="#">Sizing</a></li>
+										<li><a href="#">Checkboxes and radio addons</a></li>
+										<li class="divider"></li>
+										<li class="dropdown-header">Navs</li>
+										<li><a href="#">Tabs</a></li>
+										<li><a href="#">Pills</a></li>
+										<li><a href="#">Justified</a></li>
+									</ul>
+								</li>
+								<li class="col-sm-3">
+									<ul>
+										<li class="dropdown-header">Navbar</li>
+										<li><a href="#">Default navbar</a></li>
+										<li><a href="#">Buttons</a></li>
+										<li><a href="#">Text</a></li>
+										<li><a href="#">Non-nav links</a></li>
+										<li><a href="#">Component alignment</a></li>
+										<li><a href="#">Fixed to top</a></li>
+										<li><a href="#">Fixed to bottom</a></li>
+										<li><a href="#">Static top</a></li>
+										<li><a href="#">Inverted navbar</a></li>
+									</ul>
+								</li>
+							</ul></li>
+					</ul>
+				</div>
+			</div>
+		</div>
 	</div>
-		<!-- col -->
+	<!-- /.container -->
+</nav>
 
-	</div>
-	<!-- fin prueba plugin -->
-
-</div>
-</div>
-<!-- /.row -->
-
-</div>
-<!-- /.container -->
-
-<hr>
 
 <?php
 		// ------------------- SECCION: Paso de variables ------------------------------------------------
@@ -360,7 +441,6 @@ class Formulario {
 $miFormulario = new Formulario ( $this->lenguaje, $this->miFormulario, $this->sql );
 $miFormulario->formulario ();
 $miFormulario->mensaje ();
-
 function fecha_es($fecha) {
 	$meses = array (
 			'01' => 'Enero',
@@ -378,4 +458,5 @@ function fecha_es($fecha) {
 	);
 	return $meses [$fecha ['mes']] . " " . $fecha ['dia'] . ", " . $fecha ['anio'] . " - " . $fecha ['hora'];
 }
+
 ?>
