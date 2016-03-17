@@ -153,58 +153,50 @@ class Formulario {
 		if (! $matrizNotificaciones) {
 			echo "No hay ninguna notificación registrada para usted.";
 		} else {
+			echo "<table>";
 			foreach ( $matrizNotificaciones as $notificacion ) {
+				echo "<tr>";
+				echo "<td>";
 				
-				// var_dump($matrizNotificaciones);
+				$pordefecto = $rutaUrlBloque . "images/silueta.gif";
 				
-				$num = 86;
-				
-				if (strlen(trim($notificacion ['titulo']) . trim($notificacion ['contenido'])) > $num) {
-					$num = strlen(trim($notificacion ['titulo']) . trim($notificacion ['contenido']));
-				}
-				
-				$atributos ['id'] = "notificacion" . $notificacion ['id_notifi'];
-				$atributos ['estilo'] = "notifi";
-				$atributos ['estiloEnLinea'] = "height:" . $num . "px";
-				echo $this->miFormulario->division ( "inicio", $atributos );
-				unset ( $atributos );
-												
-				$img = $rutaUrlBloque;
+				$imagen = "<img id='foto-notifi' ";
 				
 				if ($notificacion ['imagen']) {
-					$img .= "images/" . trim($notificacion ['imagen']). "'";
+					$imagen .= "src=" . $rutaUrlBloque . "images/" . trim ( $notificacion ['imagen'] ) . "";
 				} else {
-					$img .= "images/notifi-defecto.png'";
+					$imagen .= "src=" . $pordefecto;
 				}
 				
-				$imagen = '<img class="imagen-notifi" ';
-				$imagen .= "src='" . $img . " ";
-				$imagen .= 'alt="">';
+				$imagen .= " alt='" . trim($notificacion ['emisor']) . "' title='" . trim($notificacion ['emisor']) . "'>";
 				
 				echo $imagen;
-																
-				$atributos ['id'] = "texto-notificacion";
-				$atributos ['estilo'] = "info-notifi";
-				echo $this->miFormulario->division ( "inicio", $atributos );
-				unset ( $atributos );
 				
-				$atributos ['id'] = "notifi-titulo";
-				$atributos ['estilo'] = "feed-text";
-				echo $this->miFormulario->division ( "inicio", $atributos );
-				unset ( $atributos );
+				echo "</td>";
+				echo "<td>";
 				
-				echo trim($notificacion ['titulo']);
+				$atributos ['id'] = 'enlacetitulonotifi';
+				$atributos ['enlace'] = "#";
+				$atributos ['enlaceTitulo'] = "Prueba";
+				$atributos ['enlaceTexto'] = trim($notificacion ['titulo']);
+				echo $this->miFormulario->enlace ( $atributos );
 				
-				echo $this->miFormulario->division ( "fin" );
+				echo "<p id='textonotifi'>";
 				
-				$atributos ['id'] = "";
-				$atributos ['estilo'] = "msj-notifi";
-				echo $this->miFormulario->division ( "inicio", $atributos );
-				unset ( $atributos );
+				$descrip = trim ( $notificacion ['contenido'] );
 				
-				echo trim($notificacion ['contenido']);
+				if ($notificacion ['enlace']) {
+					$descrip = str_replace ( "[", "<a id='enlaceinternonotifi' href='" . trim ( $notificacion ['enlace'] ) . "'>", $descrip );
+				} else {
+					$descrip = str_replace ( "[", "<a id='enlaceinternonotifi' href=''>", $descrip );
+				}
+				$descrip = str_replace ( "]", "</a>", $descrip );
 				
-				echo $this->miFormulario->division ( "fin" );
+				echo $descrip;
+				
+				echo "</p>";
+				
+				echo "<p id='fechanotifi'>";
 				
 				$auxfecha = trim ( $notificacion ['fecha'] );
 				
@@ -219,22 +211,14 @@ class Formulario {
 				$f ['dia'] = $auxfecha2 [2];
 				$f ['hora'] = $auxfecha [1];
 				
-				$span = '<span class="feed-time">';
-				$span .= fecha_es ( $f );
-				$span .= '</span>';
+				echo fecha_es ( $f );
 				
-				echo $span;
+				echo "</p>";
 				
-// 				echo "<hr>";
-				
-				echo $this->miFormulario->division ( "fin" );
-				
-				// <!-- FIN PRUEBA -->
-				
-				echo $this->miFormulario->division ( "fin" );
-				
-// 				echo "<hr>";
+				echo "</td>";
+				echo "</tr>";
 			}
+			echo "</table>";
 		}
 		
 		echo $this->miFormulario->division ( "fin" );

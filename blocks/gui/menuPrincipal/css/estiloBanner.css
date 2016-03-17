@@ -7,6 +7,50 @@
 	float: right !important;
 }
 
+.li-notifi {
+	list-style: none !important;
+	margin-left: -40px;
+}
+
+#foto-notifi {
+	height: 40px;
+	width: 40px;
+	
+	margin-top: 0px;
+
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
+	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+}
+
+#enlacetitulonotifi {
+	font-family: inherit;
+    line-height: 1;
+    text-align: center;
+    font-size: 15px;
+}
+
+#enlaceinternonotifi {
+	font-size:11pt;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+#textonotifi {
+	color: #333333;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif  !important;
+    font-size: 16px !important;
+    font-weight: normal;
+    line-height: 1.1;
+    text-align: justify;
+}
+
+#fechanotifi {
+    font-weight: normal !important;
+    text-align: right;
+    font-size: 13px;
+}
+
 .texto-notifi {
 	color: black !important;
 }
