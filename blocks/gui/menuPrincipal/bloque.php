@@ -1,6 +1,7 @@
 <?php
 
 namespace gui\menuPrincipal;
+
 // Evitar un acceso directo a este archivo
 if (! isset ( $GLOBALS ["autorizado"] )) {
 	include ("../index.php");
@@ -31,7 +32,7 @@ include_once ("Lenguaje.class.php");
 // Para evitar redefiniciones de clases el nombre de la clase del archivo bloque debe corresponder al nombre del bloque
 // precedida por la palabra Bloque
 
-if (class_exists ( 'Bloque' ) === false) {
+if (!class_exists ( 'Bloque' )) {
 	class Bloque implements \Bloque {
 		var $nombreBloque;
 		var $miFuncion;
@@ -69,18 +70,29 @@ if (class_exists ( 'Bloque' ) === false) {
 				$this->miFuncion->redireccionar ( "paginaPrincipal" );
 			} else {
 				
+				$this->miFrontera->setSql ( $this->miSql );
+				$this->miFrontera->setFuncion ( $this->miFuncion );
+				$this->miFrontera->setLenguaje ( $this->miLenguaje );
+					
+				$this->miFuncion->setSql ( $this->miSql );
+				$this->miFuncion->setLenguaje ( $this->miLenguaje );
+				
 				if (! isset ( $_REQUEST ['action'] )) {
 					
-					$this->miFrontera->setSql ( $this->miSql );
-					$this->miFrontera->setFuncion ( $this->miFuncion );
-					$this->miFrontera->setLenguaje ( $this->miLenguaje );
 					$this->miFrontera->frontera ();
 				} else {
+				
+					$respuesta = $this->miFuncion->action ();
 					
-					$this->miFuncion->setSql ( $this->miSql );
-					$this->miFuncion->setFuncion ( $this->miFuncion );
-					$this->miFuncion->setLenguaje ( $this->miLenguaje );
-					$this->miFuncion->action ();
+					// Si $respuesta==false, entonces se debe recargar el formulario y mostrar un mensaje de error.
+					if (! $respuesta) {
+						
+						$miBloque = $this->miConfigurador->getVariableConfiguracion ( 'esteBloque' );
+						$this->miConfigurador->setVariableConfiguracion ( 'errorFormulario', $miBloque ['nombre'] );
+					}
+					if (! isset ( $_REQUEST ['procesarAjax'] )) {
+						$this->miFrontera->frontera ();
+					}
 				}
 			}
 		}
@@ -88,6 +100,11 @@ if (class_exists ( 'Bloque' ) === false) {
 }
 // @ Crear un objeto bloque especifico
 // El arreglo $unBloque está definido en el objeto de la clase ArmadorPagina o en la clase ProcesadorPagina
+
+if (isset ( $_REQUEST ["procesarAjax"] )) {
+	$unBloque ['nombre'] = $_REQUEST ['bloqueNombre'];
+	$unBloque ['grupo'] = $_REQUEST ['bloqueGrupo'];
+}
 
 $this->miConfigurador->setVariableConfiguracion ( "esteBloque", $unBloque );
 

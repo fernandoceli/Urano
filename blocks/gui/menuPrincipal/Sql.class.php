@@ -1,208 +1,243 @@
 <?php
+
 namespace gui\menuPrincipal;
+
 if (! isset ( $GLOBALS ["autorizado"] )) {
-    include ("../index.php");
-    exit ();
+	include ("../index.php");
+	exit ();
 }
 
 include_once ("core/manager/Configurador.class.php");
 include_once ("core/connection/Sql.class.php");
 
-//Para evitar redefiniciones de clases el nombre de la clase del archivo sqle debe corresponder al nombre del bloque
-//en camel case precedida por la palabra sql
-
+// Para evitar redefiniciones de clases el nombre de la clase del archivo sqle debe corresponder al nombre del bloque
+// en camel case precedida por la palabra sql
 class Sql extends \Sql {
-	
-	
 	var $miConfigurador;
-
-function __construct() {
-    
-    $this->miConfigurador = \Configurador::singleton ();
-
-}
-
-function getCadenaSql($tipo, $variable = "") {
-    
-    /**
-     * 1.
-     * Revisar las variables para evitar SQL Injection
-     */
-    $prefijo = $this->miConfigurador->getVariableConfiguracion ( "prefijo" );
-    $idSesion = $this->miConfigurador->getVariableConfiguracion ( "id_sesion" );
-    
-    switch ($tipo) {
-        
-        /**
-         * Clausulas específicas
-         */
-        
-        case "buscarUsuario" :
-            $cadenaSql = "SELECT ";
-            $cadenaSql .= "FECHA_CREACION, ";
-            $cadenaSql .= "PRIMER_NOMBRE ";
-            $cadenaSql .= "FROM ";
-            $cadenaSql .= "USUARIOS ";
-            $cadenaSql .= "WHERE ";
-            $cadenaSql .= "`PRIMER_NOMBRE` ='" . $variable . "' ";
-            break;
-        
-        case "insertarRegistro" :
-            $cadenaSql = "INSERT INTO ";
-            $cadenaSql .= $prefijo . "registradoConferencia ";
-            $cadenaSql .= "( ";
-            $cadenaSql .= "`idRegistrado`, ";
-            $cadenaSql .= "`nombre`, ";
-            $cadenaSql .= "`apellido`, ";
-            $cadenaSql .= "`identificacion`, ";
-            $cadenaSql .= "`codigo`, ";
-            $cadenaSql .= "`correo`, ";
-            $cadenaSql .= "`tipo`, ";
-            $cadenaSql .= "`fecha` ";
-            $cadenaSql .= ") ";
-            $cadenaSql .= "VALUES ";
-            $cadenaSql .= "( ";
-            $cadenaSql .= "NULL, ";
-            $cadenaSql .= "'" . $variable ['nombre'] . "', ";
-            $cadenaSql .= "'" . $variable ['apellido'] . "', ";
-            $cadenaSql .= "'" . $variable ['identificacion'] . "', ";
-            $cadenaSql .= "'" . $variable ['codigo'] . "', ";
-            $cadenaSql .= "'" . $variable ['correo'] . "', ";
-            $cadenaSql .= "'0', ";
-            $cadenaSql .= "'" . time () . "' ";
-            $cadenaSql .= ")";
-            break;
-        
-        case "actualizarRegistro" :
-            $cadenaSql = "UPDATE ";
-            $cadenaSql .= $prefijo . "conductor ";
-            $cadenaSql .= "SET ";
-            $cadenaSql .= "`nombre` = '" . $variable ["nombre"] . "', ";
-            $cadenaSql .= "`apellido` = '" . $variable ["apellido"] . "', ";
-            $cadenaSql .= "`identificacion` = '" . $variable ["identificacion"] . "', ";
-            $cadenaSql .= "`telefono` = '" . $variable ["telefono"] . "' ";
-            $cadenaSql .= "WHERE ";
-            $cadenaSql .= "`idConductor` =" . $_REQUEST ["registro"] . " ";
-            break;
-        
-        /**
-         * Clausulas genéricas.
-         * se espera que estén en todos los formularios
-         * que utilicen esta plantilla
-         */
-        
-        case "iniciarTransaccion" :
-            $cadenaSql = "START TRANSACTION";
-            break;
-        
-        case "finalizarTransaccion" :
-            $cadenaSql = "COMMIT";
-            break;
-        
-        case "cancelarTransaccion" :
-            $cadenaSql = "ROLLBACK";
-            break;
-        
-        case "eliminarTemp" :
-            
-            $cadenaSql = "DELETE ";
-            $cadenaSql .= "FROM ";
-            $cadenaSql .= $prefijo . "tempFormulario ";
-            $cadenaSql .= "WHERE ";
-            $cadenaSql .= "id_sesion = '" . $variable . "' ";
-            break;
-        
-        case "insertarTemp" :
-            $cadenaSql = "INSERT INTO ";
-            $cadenaSql .= $prefijo . "tempFormulario ";
-            $cadenaSql .= "( ";
-            $cadenaSql .= "id_sesion, ";
-            $cadenaSql .= "formulario, ";
-            $cadenaSql .= "campo, ";
-            $cadenaSql .= "valor, ";
-            $cadenaSql .= "fecha ";
-            $cadenaSql .= ") ";
-            $cadenaSql .= "VALUES ";
-            
-            foreach ( $_REQUEST as $clave => $valor ) {
-                $cadenaSql .= "( ";
-                $cadenaSql .= "'" . $idSesion . "', ";
-                $cadenaSql .= "'" . $variable ['formulario'] . "', ";
-                $cadenaSql .= "'" . $clave . "', ";
-                $cadenaSql .= "'" . $valor . "', ";
-                $cadenaSql .= "'" . $variable ['fecha'] . "' ";
-                $cadenaSql .= "),";
-            }
-            
-            $cadenaSql = substr ( $cadenaSql, 0, (strlen ( $cadenaSql ) - 1) );
-            break;
-        
-        case "rescatarTemp" :
-            $cadenaSql = "SELECT ";
-            $cadenaSql .= "id_sesion, ";
-            $cadenaSql .= "formulario, ";
-            $cadenaSql .= "campo, ";
-            $cadenaSql .= "valor, ";
-            $cadenaSql .= "fecha ";
-            $cadenaSql .= "FROM ";
-            $cadenaSql .= $prefijo . "tempFormulario ";
-            $cadenaSql .= "WHERE ";
-            $cadenaSql .= "id_sesion='" . $idSesion . "'";
-            break;
-            
-        case 'buscarNotificaciones':
-        	$cadenaSql = "SELECT ";
-        	$cadenaSql .= "id_notifi, ";
-        	$cadenaSql .= "notifi_titulo AS titulo, ";
-        	$cadenaSql .= "notifi_conte AS contenido, ";
-        	$cadenaSql .= "notifi_enlace AS enlace, ";
-        	$cadenaSql .= "notifi_usr_emisor AS emisor, ";
-        	$cadenaSql .= "notifi_fecha_crea AS fecha, ";
-        	$cadenaSql .= "img_tipo AS imagen, ";
-        	$cadenaSql .= "notifi_estado AS estado ";
-        	$cadenaSql .= "FROM general.notificacion ";
-        	$cadenaSql .= "JOIN general.tipo_notifi ON notifi_tipo=id_tipo ";
-        	$cadenaSql .= "WHERE notifi_estado<>'0' ";
-        	$cadenaSql .= "AND notifi_usr_receptor=" . $variable . " ";
-        	$cadenaSql .= "ORDER BY notifi_fecha_crea DESC; ";
-//         	echo $cadenaSql;
-        	break;
-            
-            
-            /**
-         * Clausulas Menú.
-         * Mediante estas sentencias se generan los diferentes menus del aplicativo         
-         */
-                  
-       	case "datosMenu" :
-       		$cadenaSql=" SELECT DISTINCT";
-       		$cadenaSql.=" enl.id_menu AS menu,";
-       		$cadenaSql.=" enl.titulo AS titulo,";
-       		$cadenaSql.=" enl.columna AS columna,";
-       		$cadenaSql.=" enl.orden AS orden,";
-       		$cadenaSql.=" ten.nombre AS tipo_enlace,";
-       		$cadenaSql.=" cen.nombre AS clase_enlace,";
-       		$cadenaSql.=" enl.enlace AS enlace,";
-       		$cadenaSql.=" enl.parametros AS parametros";
-       		$cadenaSql.=" FROM kyron.kyron_menu_rol_enlace as rol";
-       		$cadenaSql.=" INNER JOIN kyron.kyron_menu_enlace AS enl ON enl.id_enlace = rol.id_enlace";
-       		$cadenaSql.=" INNER JOIN kyron.kyron_menu_tipo_enlace AS ten ON ten.id_tipo_enlace = enl.id_tipo_enlace";
-       		$cadenaSql.=" INNER JOIN kyron.kyron_menu_clase_enlace AS cen ON cen.id_clase_enlace = enl.id_clase_enlace";
-       		$cadenaSql.=" WHERE";
-       		foreach ($variable as $indice => $rol){
-       			if($indice==0){
-       				$cadenaSql.=" rol.id_rol = '".$rol."'";
-       			} else {
-       				$cadenaSql.=" OR rol.id_rol = '".$rol."'";
-       			}
-       		}
-       		$cadenaSql.=" ORDER BY enl.id_menu, enl.columna, enl.orden";
-       		$cadenaSql.=" ;";
-			break;
-    }
-    
-    return $cadenaSql;
-
-}
+	function __construct() {
+		$this->miConfigurador = \Configurador::singleton ();
+	}
+	function getCadenaSql($tipo, $variable = "") {
+		
+		/**
+		 * 1.
+		 * Revisar las variables para evitar SQL Injection
+		 */
+		$prefijo = $this->miConfigurador->getVariableConfiguracion ( "prefijo" );
+		$idSesion = $this->miConfigurador->getVariableConfiguracion ( "id_sesion" );
+		
+		switch ($tipo) {
+			
+			/**
+			 * Clausulas específicas
+			 */
+			
+			case "buscarConfiguracionDBMS" :
+				$cadenaSql = " SELECT";
+				$cadenaSql .= " `parametro`,";
+				$cadenaSql .= " `valor`";
+				$cadenaSql .= " FROM";
+				$cadenaSql .= " dbms_configuracion";
+				$cadenaSql .= " ;";
+				break;
+			
+			case "insertarRegistro" :
+				$cadenaSql = "INSERT INTO ";
+				$cadenaSql .= $prefijo . "registradoConferencia ";
+				$cadenaSql .= "( ";
+				$cadenaSql .= "`idRegistrado`, ";
+				$cadenaSql .= "`nombre`, ";
+				$cadenaSql .= "`apellido`, ";
+				$cadenaSql .= "`identificacion`, ";
+				$cadenaSql .= "`codigo`, ";
+				$cadenaSql .= "`correo`, ";
+				$cadenaSql .= "`tipo`, ";
+				$cadenaSql .= "`fecha` ";
+				$cadenaSql .= ") ";
+				$cadenaSql .= "VALUES ";
+				$cadenaSql .= "( ";
+				$cadenaSql .= "NULL, ";
+				$cadenaSql .= "'" . $variable ['nombre'] . "', ";
+				$cadenaSql .= "'" . $variable ['apellido'] . "', ";
+				$cadenaSql .= "'" . $variable ['identificacion'] . "', ";
+				$cadenaSql .= "'" . $variable ['codigo'] . "', ";
+				$cadenaSql .= "'" . $variable ['correo'] . "', ";
+				$cadenaSql .= "'0', ";
+				$cadenaSql .= "'" . time () . "' ";
+				$cadenaSql .= ")";
+				break;
+			
+			case "actualizarRegistro" :
+				$cadenaSql = "UPDATE ";
+				$cadenaSql .= $prefijo . "conductor ";
+				$cadenaSql .= "SET ";
+				$cadenaSql .= "`nombre` = '" . $variable ["nombre"] . "', ";
+				$cadenaSql .= "`apellido` = '" . $variable ["apellido"] . "', ";
+				$cadenaSql .= "`identificacion` = '" . $variable ["identificacion"] . "', ";
+				$cadenaSql .= "`telefono` = '" . $variable ["telefono"] . "' ";
+				$cadenaSql .= "WHERE ";
+				$cadenaSql .= "`idConductor` =" . $_REQUEST ["registro"] . " ";
+				break;
+			
+			/**
+			 * Clausulas genéricas.
+			 * se espera que estén en todos los formularios
+			 * que utilicen esta plantilla
+			 */
+			
+			case "iniciarTransaccion" :
+				$cadenaSql = "START TRANSACTION";
+				break;
+			
+			case "finalizarTransaccion" :
+				$cadenaSql = "COMMIT";
+				break;
+			
+			case "cancelarTransaccion" :
+				$cadenaSql = "ROLLBACK";
+				break;
+			
+			case "eliminarTemp" :
+				
+				$cadenaSql = "DELETE ";
+				$cadenaSql .= "FROM ";
+				$cadenaSql .= $prefijo . "tempFormulario ";
+				$cadenaSql .= "WHERE ";
+				$cadenaSql .= "id_sesion = '" . $variable . "' ";
+				break;
+			
+			case "insertarTemp" :
+				$cadenaSql = "INSERT INTO ";
+				$cadenaSql .= $prefijo . "tempFormulario ";
+				$cadenaSql .= "( ";
+				$cadenaSql .= "id_sesion, ";
+				$cadenaSql .= "formulario, ";
+				$cadenaSql .= "campo, ";
+				$cadenaSql .= "valor, ";
+				$cadenaSql .= "fecha ";
+				$cadenaSql .= ") ";
+				$cadenaSql .= "VALUES ";
+				
+				foreach ( $_REQUEST as $clave => $valor ) {
+					$cadenaSql .= "( ";
+					$cadenaSql .= "'" . $idSesion . "', ";
+					$cadenaSql .= "'" . $variable ['formulario'] . "', ";
+					$cadenaSql .= "'" . $clave . "', ";
+					$cadenaSql .= "'" . $valor . "', ";
+					$cadenaSql .= "'" . $variable ['fecha'] . "' ";
+					$cadenaSql .= "),";
+				}
+				
+				$cadenaSql = substr ( $cadenaSql, 0, (strlen ( $cadenaSql ) - 1) );
+				break;
+			
+			case "rescatarTemp" :
+				$cadenaSql = "SELECT ";
+				$cadenaSql .= "id_sesion, ";
+				$cadenaSql .= "formulario, ";
+				$cadenaSql .= "campo, ";
+				$cadenaSql .= "valor, ";
+				$cadenaSql .= "fecha ";
+				$cadenaSql .= "FROM ";
+				$cadenaSql .= $prefijo . "tempFormulario ";
+				$cadenaSql .= "WHERE ";
+				$cadenaSql .= "id_sesion='" . $idSesion . "'";
+				break;
+			
+			/**
+			 * Clausulas Menú.
+			 * Mediante estas sentencias se generan los diferentes menus del aplicativo
+			 */
+			case "datosMenu" :
+				$cadenaSql = " SELECT DISTINCT";
+				$cadenaSql .= " mn.id_menu AS id_menu,";
+				$cadenaSql .= " mn.etiqueta AS etiqueta_menu,";
+				$cadenaSql .= " mn.peso AS menu_grupo,";
+				$cadenaSql .= " gru.id_grupo_menu AS id_grupo_menu,";
+				$cadenaSql .= " gru.etiqueta AS etiqueta_grupo_menu,";
+				$cadenaSql .= " gru.id_grupo_padre AS id_grupo_padre,";
+				$cadenaSql .= " gru.peso AS peso_grupo,";
+				$cadenaSql .= " serv.id_enlace AS id_enlace,";
+				$cadenaSql .= " enl.etiqueta AS etiqueta_enlace,";
+				$cadenaSql .= " enl.url_host_enlace AS url_host_enlace,";
+				$cadenaSql .= " enl.pagina_enlace AS pagina_enlace,";
+				$cadenaSql .= " enl.parametros AS parametros,";
+				$cadenaSql .= " subs.id_subsistema_sga AS id_subsistema_sga,";
+				$cadenaSql .= " subs.host AS host,";
+				$cadenaSql .= " subs.ruta AS ruta,";
+				$cadenaSql .= " subs.codificado AS codificado,";
+				$cadenaSql .= " subs.indice_codificador AS indice_codificador,";
+				$cadenaSql .= " subs.funcion_codificador AS funcion_codificador";
+				$cadenaSql .= " FROM public.urano_menu AS mn";
+				$cadenaSql .= " INNER JOIN public.urano_grupo_menu AS gru";
+				$cadenaSql .= " ON mn.id_menu=gru.id_menu";
+				$cadenaSql .= " AND gru.estado=true";
+				$cadenaSql .= " AND mn.estado=true";
+				$cadenaSql .= " INNER JOIN public.urano_servicio AS serv";
+				$cadenaSql .= " ON serv.id_grupo_menu=gru.id_grupo_menu";
+				$cadenaSql .= " AND serv.estado=true";
+				$cadenaSql .= " INNER JOIN public.urano_enlace AS enl";
+				$cadenaSql .= " ON enl.id_enlace=serv.id_enlace";
+				$cadenaSql .= " LEFT JOIN public.urano_subsistema_sga AS subs";
+				$cadenaSql .= " ON subs.id_subsistema_sga=enl.id_subsistema_sga";
+				$cadenaSql .= " WHERE";
+				$cadenaSql .= " serv.id_rol IN (" . implode ( ", ", $variable ) . ")";
+				$cadenaSql .= " ORDER BY";
+				$cadenaSql .= " mn.peso,";
+				$cadenaSql .= " gru.peso,";
+				$cadenaSql .= " enl.etiqueta";
+				$cadenaSql .= " ;";
+				break;
+			
+			case 'buscarNotificaciones' :
+				$cadenaSql = "SELECT ";
+				$cadenaSql .= "id_notifi, ";
+				$cadenaSql .= "notifi_titulo AS titulo, ";
+				$cadenaSql .= "notifi_conte AS contenido, ";
+				$cadenaSql .= "notifi_enlace AS enlace, ";
+				$cadenaSql .= "notifi_usr_emisor AS emisor, ";
+				$cadenaSql .= "notifi_fecha_crea AS fecha, ";
+				$cadenaSql .= "img_tipo AS imagen, ";
+				$cadenaSql .= "notifi_estado AS estado ";
+				$cadenaSql .= "FROM general.notificacion ";
+				$cadenaSql .= "JOIN general.tipo_notifi ON notifi_tipo=id_tipo ";
+				$cadenaSql .= "WHERE notifi_estado<>'0' ";
+				$cadenaSql .= "AND notifi_usr_receptor=" . $variable . " ";
+				$cadenaSql .= "ORDER BY notifi_fecha_crea DESC; ";
+				break;
+				
+			case 'actualizarNotificaciones':
+				$cadenaSql = "UPDATE ";
+				$cadenaSql .= "general.notificacion ";
+				$cadenaSql .= "SET notifi_estado=2 ";
+				$cadenaSql .= "WHERE ";
+				$cadenaSql .= "notifi_usr_receptor='" . $variable . "'; ";
+				break;
+				
+			case 'perfilesUsuario' :
+				$cadenaSql = "SELECT ";
+				$cadenaSql .= "cla_codigo COD, ";
+				$cadenaSql .= "cla_clave PWD, ";
+				$cadenaSql .= "cla_tipo_usu TIP_US, ";
+				$cadenaSql .= "cla_estado EST ";
+				$cadenaSql .= "FROM geclaves ";
+				$cadenaSql .= "WHERE ";
+				$cadenaSql .= "cla_codigo='" . $variable . "' ";
+				$cadenaSql .= "and cla_estado='A' ";
+				$cadenaSql .= "ORDER BY cla_estado,cla_tipo_usu";
+				break;
+			
+			case 'datosFuncionario' :
+				$cadenaSql = " SELECT cta_usu_id,";
+				$cadenaSql .= " cta_nombre_usuario,";
+				$cadenaSql .= " TRIM(usu_apellido)||' '||TRIM(usu_nombre) nombre";
+				$cadenaSql .= " FROM administracion.admin_cuenta";
+				$cadenaSql .= " INNER JOIN administracion.admin_usuario ON usu_id=cta_usu_id";
+				$cadenaSql .= " WHERE cta_nombre_usuario='" . $variable . "'";
+				break;
+		}
+		
+		return $cadenaSql;
+	}
 }
 ?>

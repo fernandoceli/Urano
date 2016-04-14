@@ -1,8 +1,7 @@
 <?php
 $indice = 0;
-// $funcion[$indice++]="jquery.dcmegamenu.1.3.3.js";
-// $funcion [$indice ++] = "jquery-2.2.1.js";
 $funcion [$indice ++] = "notifica.js";
+// $funcion[$indice++]="jquery.dcmegamenu.1.3.3.js";
 
 $rutaBloque = $this->miConfigurador->getVariableConfiguracion ( "host" );
 $rutaBloque .= $this->miConfigurador->getVariableConfiguracion ( "site" );
@@ -12,6 +11,8 @@ if ($esteBloque ["grupo"] == "") {
 } else {
 	$rutaBloque .= "/blocks/" . $esteBloque ["grupo"] . "/" . $esteBloque ["nombre"];
 }
+
+$_REQUEST ['tiempo'] = time ();
 
 if (isset ( $funcion [0] )) {
 	foreach ( $funcion as $clave => $nombre ) {
@@ -24,6 +25,8 @@ if (isset ( $funcion [0] )) {
 		}
 	}
 }
+
+include ("ajax.php");
 
 ?>
 

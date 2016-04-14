@@ -35,6 +35,9 @@ class Funcion {
 			return true;
 		}
 	}
+	function procesarAjax() {
+		include_once ($this->ruta . "funcion/procesarAjax.php");
+	}
 	function redireccionar($opcion, $valor = "") {
 		include_once ($this->ruta . "/funcion/redireccionar.php");
 	}
@@ -54,7 +57,9 @@ class Funcion {
 		
 		// Importante: Es adecuado que sea una variable llamada opcion o action la que guie el procesamiento:
 		
-		if (isset ( $_REQUEST ["opcion"] )) {
+		if (isset ( $_REQUEST ['procesarAjax'] )) {
+			$this->procesarAjax ();
+		} else if (isset ( $_REQUEST ["opcion"] )) {
 			// Realizar una validación específica para los campos de este formulario:
 			$validacion = $this->verificarCampos ();
 			

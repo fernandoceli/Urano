@@ -2,8 +2,10 @@
 
 namespace gui\menuPrincipal\formulario;
 
-include_once ($this->ruta . "/builder/DibujarMenu.class.php");
-use gui\menuPrincipal\builder\Dibujar;
+include_once ($this->ruta . '/funcion/encriptar.class.php');
+use gui\menuPrincipal\funcion\encriptar;
+// include_once ($this->ruta . "/builder/DibujarMenu.class.php");
+// use gui\menuPrincipal\builder\Dibujar;
 if (! isset ( $GLOBALS ["autorizado"] )) {
 	include ("../index.php");
 	exit ();
@@ -13,8 +15,6 @@ class FormularioMenu {
 	var $lenguaje;
 	var $miFormulario;
 	var $miSql;
-	var $miSesionSso;
-	
 	function __construct($lenguaje, $formulario, $sql) {
 		$this->miConfigurador = \Configurador::singleton ();
 		
@@ -25,8 +25,6 @@ class FormularioMenu {
 		$this->miFormulario = $formulario;
 		
 		$this->miSql = $sql;
-		
-		$this->miSesionSso = \SesionSso::singleton ();
 	}
 	function formulario() {
 		
@@ -41,229 +39,183 @@ class FormularioMenu {
 		$rutaBloque = $this->miConfigurador->getVariableConfiguracion ( "host" );
 		$rutaBloque .= $this->miConfigurador->getVariableConfiguracion ( "site" ) . "/blocks/";
 		$rutaBloque .= $esteBloque ['grupo'] . '/' . $esteBloque ['nombre'];
+		$rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloque" );
+		
+		// Se crea una instancia del objeto encriptador.
+		$miEncriptador = new encriptar ( $this->miSql );
+		
 		/**
-		 * IMPORTANTE: Este formulario está utilizando jquery.
-		 * Por tanto en el archivo ready.php se delaran algunas funciones js
-		 * que lo complementan.
+		 * Comienza sección de variables necesarias para los enlaces
 		 */
-		
-		// Rescatar los datos de este bloque
-		$esteBloque = $this->miConfigurador->getVariableConfiguracion ( "esteBloque" );
-		
-		// ---------------- SECCION: Parámetros Globales del Formulario ----------------------------------
+		// codigo del usuario
+		$usuario = $_REQUEST ['usuario'];
+		// $usuario = 79708124;
+		// $usuario = $_SESSION ['usuario_login'];
+		$tokenSaraAcademica = $miEncriptador->codificar_sara ( 'condorSara2013!' );
+		$tokenSaraAdministrativa = $miEncriptador->codificar_sara ( 's4r44dm1n1str4t1v4C0nd0r2014!' );
+		$tokenSaraDocencia = $miEncriptador->codificar_sara ( 'condorSara2013' );
+		$tiempo = time ();
 		/**
-		 * Atributos que deben ser aplicados a todos los controles de este formulario.
-		 * Se utiliza un arreglo
-		 * independiente debido a que los atributos individuales se reinician cada vez que se declara un campo.
-		 *
-		 * Si se utiliza esta técnica es necesario realizar un mezcla entre este arreglo y el específico en cada control:
-		 * $atributos= array_merge($atributos,$atributosGlobales);
+		 * Termina sección de variables necesarias para los enlaces
 		 */
-		$atributosGlobales ['campoSeguro'] = 'true';
-		$_REQUEST ['tiempo'] = time ();
+		// consultar los roles que están asignados al usuario
+		$conexion = 'academica_ac';
+		$esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB ( $conexion );
 		
-		// -------------------------------------------------------------------------------------------------
+		$cadenaSql = $this->miSql->getCadenaSql ( 'perfilesUsuario', $usuario );
+		$datosPerfiles = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, 'busqueda' );
+		$perfiles = array_column ( $datosPerfiles, 'TIP_US' );
+		// $perfiles = array(4, 16, 20, 24, 28, 30, 31, 32, 33, 34, 51, 52, 61, 68, 72, 75, 80, 83, 84, 87, 88, 104, 105, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125);
 		
-		
-		
-		// ---------------- SECCION: Parámetros Generales del Formulario ----------------------------------
-		$esteCampo = $esteBloque ['nombre'];
-		$atributos ['id'] = $esteCampo;
-		$atributos ['nombre'] = $esteCampo;
-		/**
-		 * Nuevo a partir de la versión 1.0.0.2, se utiliza para crear de manera rápida el js asociado a
-		 * validationEngine.
-		 */
-		// Si no se coloca, entonces toma el valor predeterminado 'application/x-www-form-urlencoded'
-		$atributos ['tipoFormulario'] = 'multipart/form-data';
-		
-		// Si no se coloca, entonces toma el valor predeterminado 'POST'
-		$atributos ['metodo'] = 'POST';
-		
-		// Si no se coloca, entonces toma el valor predeterminado 'index.php' (Recomendado)
-		$atributos ['action'] = 'index.php';
-		$atributos ['titulo'] = $this->lenguaje->getCadena ( $esteCampo );
-		
-		// Si no se coloca, entonces toma el valor predeterminado.
-		$atributos ['estilo'] = '';
-		$atributos ['marco'] = true;
-		$tab = 1;
-		// ---------------- FIN SECCION: de Parámetros Generales del Formulario ----------------------------
-		
-		$conexion = "estructura";
-		$esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB($conexion);
-		
-		// ----------------INICIAR EL FORMULARIO ------------------------------------------------------------
-		$atributos ['tipoEtiqueta'] = 'inicio';
-// 		$atributos = array_merge ( $atributos, $atributosGlobales );
-		echo $this->miFormulario->formulario ( $atributos );
-		unset ( $atributos );
-		// ---------------- SECCION: Controles del Formulario -----------------------------------------------
-		
-		$respuesta = $this->miSesionSso->getParametrosSesionAbierta();
-		
-		$cadenaSql = $this->miSql->getCadenaSql ( "datosMenu", $respuesta['perfil'] );
-		$datosMenu = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, "busqueda" );
-
-
-		
-// 		foreach ( $datosMenu as $menu => $item ) {
-// 			if(strcmp($item['tipo_enlace'], 'submenu_enlace_interno') == 0){
-// 				$enlace = '#';
-// 				$enlaces [$this->lenguaje->getCadena ($item ['menu'])]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-// 			}elseif(strcmp($item['tipo_enlace'], 'enlace_interno') == 0){
-// 				$enlace = 'pagina=' . $item ['enlace'].$item['parametros'];
-// 				$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// 				$enlaces [$this->lenguaje->getCadena ($item ['menu'])]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-// 			}
-// 			elseif(strcmp($item['tipo_enlace'], 'enlace_externo') == 0){
-// 				$enlace = $item ['enlace'];
-// 				//$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// 				$enlaces [$this->lenguaje->getCadena ($item ['menu'])]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-// 			}
-// 		}
-		
-// 		foreach ( $datosMenu as $menu => $item ) {
-// 			if(strcmp($item['tipo_enlace'], 'submenu_enlace_interno') == 0){
-// 				$enlace = '#';
-// 				$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;	
-// 			}elseif(strcmp($item['tipo_enlace'], 'enlace_interno') == 0){				
-// 				$enlace = 'pagina=' . $item ['enlace'].$item['parametros'];		
-// 				$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// 				$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;					
-// 			}
-
-// 		foreach ( $datosMenu as $menu => $item ) {
-// 			if(strcmp($item['tipo_enlace'], 'menu_enlace_interno') == 0){
-// 				//Enlace de menú siempre se codifica?
-// 				$enlace = 'pagina=' . $item ['enlace'].$item['parametros'];
-// 				$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// 				$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-// 			}elseif(strcmp($item['tipo_enlace'], 'submenu_enlace_interno') == 0){
-// 				//Enlace de submenú nunca se codifica?
-// 				$enlace = '#';
-// 				$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-// 			}elseif(strcmp($item['tipo_enlace'], 'enlace_interno') == 0){
-// 				//Enlace normal siempre se codifica?
-// 				$enlace = 'pagina=' . $item ['enlace'].$item['parametros'];
-// 				$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// 				$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-// 			}
-// // 			elseif(strcmp($item['tipo_enlace'], 'submenu_enlace_interno') == 0){
-// // 				$enlace = 'pagina=' . $item ['menu'];
-// // 				$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// // 				$nombrePagina = $this->lenguaje->getCadena ( $item ['menu'] );
-// // 				$enlaces [$nombrePagina] = $enlace;
-// // 			}elseif(strcmp($item['tipo_enlace'], 'enlace_interno') == 0){
-// // 				$enlace = $item ['externo'];
-// // 				//$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// // 				$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;						
-// // 			}
-// 		}
-		
-		/*
-		 * Se generan la estructura de un arreglo 3dimensional y se llena con arreglos vacíos.
-		 */
-		foreach ( $datosMenu as $menu => $item ) {
-			$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['clase_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = array ();
+		$conexion = 'lamasu';
+		$esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB ( $conexion );
+		$cadenaSql = $this->miSql->getCadenaSql ( "datosFuncionario", $usuario );
+		$datosPerfiles = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, "busqueda" );
+		if ($datosPerfiles) {
+			$atributos ['nombre_usuario'] = $datosPerfiles [0] [2];
+		} else {
+			$atributos ['nombre_usuario'] = 'INVITADO';
 		}
 		
-		foreach ( $datosMenu as $menu => $item ) {
-			//Se instancia el enlace como # que significa que el enlace no existe inicialmente.
-			$enlace = '#';
-			//Dependiendo de la clase del enlace (menú, submenú, normal) se da un enlace al componente.
-			switch($item['clase_enlace']){
-				case 'menu'://Cuando el enlace es clase menú.
-					//Dependiendo del tipo de enlace (interno o externo) se codifica o no el enlace.
-					switch($item['tipo_enlace']){
-						case 'interno'://Cuando el enlace del menú es de tipo interno.
-							$enlace = 'pagina=' . $item ['enlace'].$item['parametros'];
-							$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-							break;
-						case 'externo':
-							$enlace = $item ['enlace'].$item['parametros'];
-							break;
+		$conexion = 'estructura';
+		$esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB ( $conexion );
+		
+		$cadenaSql = $this->miSql->getCadenaSql ( 'datosMenu', $perfiles );
+		$datosMenu = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, 'busqueda' );
+		
+		// Se genera un arreglo con todos los enlaces, además su título y los títulos del menú y los grupos menú
+		if ($datosMenu) {
+			$enlaces = array ();
+			$titulosMenu = array ();
+			$titulosGrupoMenu = array ();
+			foreach ( $datosMenu as $menu => $item ) {
+				$titulosMenu [$item ['id_menu']] = $item ['etiqueta_menu'];
+				$titulosGrupoMenu [$item ['id_grupo_menu']] = $item ['etiqueta_grupo_menu'];
+				$enlace = "#";
+				// Se establece un enlace nulo de manera predeterminada
+				if ($item ['url_host_enlace'] != '') { // Enlace completo especificado, no se arma el enlace y no se codifica nada.
+					$enlace = $item ['url_host_enlace'];
+				} elseif ($item ['codificado'] == 't') { // Es un enlace codificado
+					if ($item ['pagina_enlace'] != '') { // Si existe el parámetro página
+						$enlace = 'pagina=' . $item ['pagina_enlace'] . '&' . $item ['parametros'];
+					} else { // Si no existe el parámetro página
+						$enlace = $item ['parametros'];
 					}
-					break;
-				case 'submenu':
-					switch($item['tipo_enlace']){
-						case 'interno'://Cuando el enlace del submenú es de tipo interno.
-							$enlace = '#';
-							break;
-						case 'externo':
-							$enlace = '#';
-							break;
+					eval ( "\$enlace = \"$enlace\";" );
+					// Se evaluan las variables de los parámetros
+					$enlace = $miEncriptador->{$item ['funcion_codificador']} ( $enlace );
+					$enlace = $item ['host'] . $item ['ruta'] . '?' . $item ['indice_codificador'] . '=' . $enlace;
+				} else { // No es un enlace codificado
+					if ($item ['pagina_enlace'] != '') { // Si existe el parámetro página
+						$enlace = 'pagina=' . $item ['pagina_enlace'] . '&' . $item ['parametros'];
+					} else { // Si no existe el parámetro página
+						$enlace = $item ['parametros'];
 					}
-					break;
-				case 'normal':
-					switch($item['tipo_enlace']){
-						case 'interno'://Cuando el enlace normal es de tipo interno.
-							$enlace = 'pagina=' . $item ['enlace'].$item['parametros'];
-							$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-							break;
-						case 'externo':
-							
-							break;
-					}
-				break;
+					$enlace = $item ['host'] . $item ['ruta'] . '?' . $item ['indice_codificador'] . '=' . $enlace;
+				}
+				$enlacesJavascript [] = array (
+						'etiqueta' => $item ['etiqueta_menu'] . ' - ' . $item ['etiqueta_grupo_menu'] . ' - ' . $item ['etiqueta_enlace'],
+						'url' => $enlace 
+				);
+				$enlaces [$item ['id_menu']] [$item ['id_grupo_menu']] [$item ['id_enlace']] = array (
+						'etiqueta' => $item ['etiqueta_enlace'],
+						'url' => $enlace 
+				);
 			}
-			$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['clase_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
+			// var_dump($enlaces,$titulosMenu,$titulosGrupoMenu);
+		} else {
+			die ( 'Sin servicios registrados para el usuario.' );
 		}
+		echo '<script>var enlacesRol=' . json_encode ( $enlacesJavascript ) . ';</script>';
+		
+		$cadenaSql = $this->miSql->getCadenaSql ( 'buscarNotificaciones', $usuario );
+		$matrizNotificaciones = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, 'busqueda' );
+		$matrizNotificaciones = ($matrizNotificaciones) ? $matrizNotificaciones : array ();
+		
+		$cantidadNoti = 0;
+		// Son la cantidad de notificaciones pendientes
+		
+		$imgsrcNotificacion = array ();
+		$imgaltNotificacion = array ();
+		$tituloNotificacion = array ();
+		$descripcionNotificacion = array ();
+		$fechaNotificacion = array ();
+		$estadoNotificacion = array();
+		
+		if ($matrizNotificaciones) {
+			foreach ( $matrizNotificaciones as $notificacion ) {
+				
+				if ($notificacion ['estado'] == 1) {
+					$cantidadNoti ++;
+				}
+				
+				array_push( $estadoNotificacion, trim($notificacion ['estado']) );
+				
+				$pordefecto = $rutaUrlBloque . 'images/silueta.gif';
+				
+				if ($notificacion ['imagen']) {
+					$imagen = $rutaUrlBloque . 'images/' . trim ( $notificacion ['imagen'] );
+				} else {
+					$imagen = $pordefecto;
+				}
+				
+				array_push ( $imgsrcNotificacion, $this->imagenBase64($imagen) );
+				
+				array_push ( $imgaltNotificacion, trim ( $notificacion ['emisor'] ) );
+				
+				array_push ( $tituloNotificacion, trim ( $notificacion ['titulo'] ) );
+				
+				$descrip = trim ( $notificacion ['contenido'] );
+				
+				if ($notificacion ['enlace']) {
+					$descrip = str_replace ( '[', '<a id="enlaceinternonotifi" href="' . trim ( $notificacion ['enlace'] ) . '">', $descrip );
+				} else {
+					$descrip = str_replace ( '[', '<a id="enlaceinternonotifi" href="">', $descrip );
+				}
+				$descrip = str_replace ( ']', '</a>', $descrip );
+				
+				array_push ( $descripcionNotificacion, $descrip );
+				
+				$auxfecha = trim ( $notificacion ['fecha'] );
+				
+				$auxfecha = explode ( ' ', $auxfecha );
+				
+				$auxfecha2 = $auxfecha [0];
+				
+				$auxfecha2 = explode ( '-', $auxfecha2 );
+				
+				$f ['anio'] = $auxfecha2 [0];
+				$f ['mes'] = $auxfecha2 [1];
+				$f ['dia'] = $auxfecha2 [2];
+				$f ['hora'] = $auxfecha [1];
+				
+				array_push ( $fechaNotificacion, $this->fecha_es ( $f ) );
+			}
+		}
+		
+		$atributos ['id'] = 'megaMenu';
+		$atributos ['target'] = 'principal';
+		$atributos ['url_escudo'] = $this->imagenBase64($rutaUrlBloque . 'images/escudo.png');
+		$atributos ['url_foto_perfil'] = $this->imagenBase64($rutaUrlBloque . 'images/profile.png');
+		// $atributos ['nombre_usuario'] = 'JORGE ULISES USECHE CUELLAR';
+		$atributos ['profesion'] = 'Msc. Teleinformática';
 		$atributos ['enlaces'] = $enlaces;
-		$crearMenu = new Dibujar ();
-		echo $crearMenu->html ( $atributos );
+		$atributos ['titulosMenu'] = $titulosMenu;
+		$atributos ['titulosGrupoMenu'] = $titulosGrupoMenu;
 		
-		// ------------------- SECCION: Paso de variables ------------------------------------------------
+		$atributos ['cantNoti'] = $cantidadNoti;
+		$atributos ['notificaciones'] = count ( $matrizNotificaciones );
+		// El número total de notificaciones
 		
-		/**
-		 * En algunas ocasiones es útil pasar variables entre las diferentes páginas.
-		 * SARA permite realizar esto a través de tres
-		 * mecanismos:
-		 * (a). Registrando las variables como variables de sesión. Estarán disponibles durante toda la sesión de usuario. Requiere acceso a
-		 * la base de datos.
-		 * (b). Incluirlas de manera codificada como campos de los formularios. Para ello se utiliza un campo especial denominado
-		 * formsara, cuyo valor será una cadena codificada que contiene las variables.
-		 * (c) a través de campos ocultos en los formularios. (deprecated)
-		 */
+		$atributos ['imgsrcNotificacion'] = $imgsrcNotificacion;
+		$atributos ['imgaltNotificacion'] = $imgaltNotificacion;
+		$atributos ['tituloNotificacion'] = $tituloNotificacion;
+		$atributos ['descripNotificacion'] = $descripcionNotificacion;
+		$atributos ['fechasNotificacion'] = $fechaNotificacion;
+		$atributos ['estadoNotificacion'] = $estadoNotificacion;
+		$atributos ['url_clock'] = $this->imagenBase64($rutaUrlBloque . 'images/mini-clock.png');
 		
-		// En este formulario se utiliza el mecanismo (b) para pasar las siguientes variables:
-		
-		// Paso 1: crear el listado de variables
-		
-		$valorCodificado = "actionBloque=" . $esteBloque ["nombre"];
-		$valorCodificado .= "&pagina=" . $this->miConfigurador->getVariableConfiguracion ( 'pagina' );
-		$valorCodificado .= "&bloque=" . $esteBloque ['nombre'];
-		$valorCodificado .= "&bloqueGrupo=" . $esteBloque ["grupo"];
-		$valorCodificado .= "&opcion=registrarBloque";
-		/**
-		 * SARA permite que los nombres de los campos sean dinámicos.
-		 * Para ello utiliza la hora en que es creado el formulario para
-		 * codificar el nombre de cada campo.
-		 */
-		$valorCodificado .= "&campoSeguro=" . $_REQUEST ['tiempo'];
-		$valorCodificado .= "&tiempo=" . time();
-		// Paso 2: codificar la cadena resultante
-		$valorCodificado = $this->miConfigurador->fabricaConexiones->crypto->codificar ( $valorCodificado );
-		
-		$atributos ["id"] = "formSaraData"; // No cambiar este nombre
-		$atributos ["tipo"] = "hidden";
-		$atributos ['estilo'] = '';
-		$atributos ["obligatorio"] = false;
-		$atributos ['marco'] = true;
-		$atributos ["etiqueta"] = "";
-		$atributos ["valor"] = $valorCodificado;
-		echo $this->miFormulario->campoCuadroTexto ( $atributos );
-		unset ( $atributos );
-		
-		// ----------------FIN SECCION: Paso de variables -------------------------------------------------
-		
-		// ---------------- FIN SECCION: Controles del Formulario -------------------------------------------
-		
-		// ----------------FINALIZAR EL FORMULARIO ----------------------------------------------------------
-		// Se debe declarar el mismo atributo de marco con que se inició el formulario.
-		$atributos ['marco'] = true;
-		$atributos ['tipoEtiqueta'] = 'fin';
-		echo $this->miFormulario->formulario ( $atributos );
+		echo $this->miFormulario->megaMenu ( $atributos );
 	}
 	function mensaje() {
 		
@@ -289,12 +241,38 @@ class FormularioMenu {
 			$atributos ["estilo"] = 'information';
 			$atributos ['efecto'] = 'desvanecer';
 			$atributos ["etiqueta"] = '';
-			$atributos ["columnas"] = ''; // El control ocupa 47% del tamaño del formulario
+			$atributos ["columnas"] = '';
+			// El control ocupa 47% del tamaño del formulario
 			echo $this->miFormulario->campoMensaje ( $atributos );
 			unset ( $atributos );
 		}
 		
 		return true;
+	}
+	
+	private function fecha_es($fecha) {
+		$meses = array (
+				'01' => 'Enero',
+				'02' => 'Febrero',
+				'03' => 'Marzo',
+				'04' => 'Abril',
+				'05' => 'Mayo',
+				'06' => 'Junio',
+				'07' => 'Julio',
+				'08' => 'Agosto',
+				'09' => 'Septiembre',
+				'10' => 'Octubre',
+				'11' => 'Noviembre',
+				'12' => 'Diciembre' 
+		);
+		return $meses [$fecha ['mes']] . ' ' . $fecha ['dia'] . ', ' . $fecha ['anio'] . ' - ' . $fecha ['hora'];
+	}
+	
+	private function imagenBase64($rutaImagen) {
+		$imagen = file_get_contents ( $rutaImagen );
+		$imagenEncriptada = base64_encode ( $imagen );
+		$url = "data:image/png;base64," . $imagenEncriptada;
+		return $url;
 	}
 }
 
@@ -302,5 +280,4 @@ $miFormulario = new FormularioMenu ( $this->lenguaje, $this->miFormulario, $this
 
 $miFormulario->formulario ();
 $miFormulario->mensaje ();
-
 ?>

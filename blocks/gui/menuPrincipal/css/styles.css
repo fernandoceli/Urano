@@ -72,6 +72,13 @@ footer a {
   color: #eee;
   text-align: right;
 }
+
+.notification {
+  font-size: 18px;
+  color: #eee;
+  text-align: right;
+}
+
 .closesession {
   font-size: 15px;
   color: #eee;
@@ -184,3 +191,17 @@ footer {
 }
 
 /**End Mega Menu**/
+
+/* iframe itself */
+
+iframe#bloqueC {
+    background: #ffffff;
+    width: 100%;
+}
+/**Quita CSS de SARA**/
+#marcoGeneral{
+	width: auto;
+	border: none;
+	padding: 0px 0px;
+}
+

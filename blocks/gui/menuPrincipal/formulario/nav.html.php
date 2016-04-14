@@ -1,7 +1,14 @@
 <?php
-$rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloque" );
+namespace gui\menuPrincipal\formulario;
+$esteBloque = $this -> miConfigurador -> getVariableConfiguracion("esteBloque");
+$rutaUrlBloque = $this -> miConfigurador -> getVariableConfiguracion("rutaUrlBloque");
+
+$rutaBloque = $this -> miConfigurador -> getVariableConfiguracion("host");
+$rutaBloque .= $this -> miConfigurador -> getVariableConfiguracion("site") . "/blocks/";
+$rutaBloque .= $esteBloque['grupo'] . '/' . $esteBloque['nombre'];
 ?>
-<nav class="navbar" role="navigation">
+
+<<nav class="navbar" role="navigation">
     <div id="imagenfondo" class="navbar"></div>
     <!--navbar-fixed-top-->
     <div class="container">
