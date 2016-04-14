@@ -1,6 +1,6 @@
 <?php
 
-namespace gui\accesoIncorrecto;
+namespace gui\inicio;
 
 if (! isset ( $GLOBALS ["autorizado"] )) {
 	include ("../index.php");
@@ -28,6 +28,56 @@ class Sql extends \Sql {
 			/**
 			 * Clausulas específicas
 			 */
+			case 'buscarRol':
+				$cadenaSql=" SELECT";
+				$cadenaSql.=" `nombre`,";
+				$cadenaSql.=" `servidor`,";
+				$cadenaSql.=" `puerto`,";
+				$cadenaSql.=" `ssl`,";
+				$cadenaSql.=" `db`,";
+				$cadenaSql.=" `usuario`, ";
+				$cadenaSql.=" `password`,";
+				$cadenaSql.=" `dbms`";
+				$cadenaSql.=" FROM";
+				$cadenaSql.=" dbms_dbms";
+				$cadenaSql.=" WHERE";
+				$cadenaSql.=" nombre='".$variable."';";
+				//$cadenaSql.=" true";
+				break;
+			
+			// case 'buscarRol':
+				// $cadenaSql=" UPDATE";
+				// $cadenaSql.=" ".$variable['prefijo']."valor_sesion";
+				// $cadenaSql.=" SET";
+				// $cadenaSql.=" valor='".$variable['valor']."'";
+				// $cadenaSql.=" WHERE";
+				// $cadenaSql.=" id_sesion='".$variable['id_sesion']."'";
+				// $cadenaSql.=" AND";
+				// $cadenaSql.=" variable='expiracion'";
+				// break;
+			
+			case "buscarConfiguracionDBMS" :
+				$cadenaSql = " SELECT";
+				$cadenaSql .= " `parametro`,";
+				$cadenaSql .= " `valor`";
+				$cadenaSql .= " FROM";
+				$cadenaSql .= " dbms_configuracion";
+				$cadenaSql .= " ;";
+				break;
+				
+			case "buscarClaveUsuario" :
+				$cadenaSql=" SELECT";
+				$cadenaSql.=" cla_codigo COD,";
+				$cadenaSql.=" cla_clave PWD,";
+				$cadenaSql.=" cla_tipo_usu TIP_US,";
+				$cadenaSql.=" cla_estado EST";
+				$cadenaSql.=" FROM";
+				$cadenaSql.=" " . $variable['sql_tabla1'];
+				$cadenaSql.=" WHERE";
+				$cadenaSql.=" cla_codigo='" . $variable['usuario'] . "'";
+				$cadenaSql.=" ORDER BY cla_estado,cla_tipo_usu";
+				break;
+				
 			case 'insertarPagina' :
 				$cadenaSql = 'INSERT INTO ';
 				$cadenaSql .= $prefijo . 'pagina ';

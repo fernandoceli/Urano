@@ -1,5 +1,6 @@
 <?php
 $rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloque" );
+$atributosGlobales ['campoSeguro'] = 'true';
 ?>
 
 <header>
@@ -33,6 +34,11 @@ $rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloqu
 				$esteCampo = $esteBloque ['nombre'];
 				$atributos ['id'] = $esteCampo;
 				$atributos ['nombre'] = $esteCampo;
+				/**
+                 * Nuevo a partir de la versión 1.0.0.2, se utiliza para crear de manera rápida el js asociado a
+                 * validationEngine.
+                 */
+                $atributos ['validar'] = true;
 				// Si no se coloca, entonces toma el valor predeterminado 'application/x-www-form-urlencoded'
 				$atributos ['tipoFormulario'] = '';
 				// Si no se coloca, entonces toma el valor predeterminado 'POST'
@@ -47,7 +53,9 @@ $rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloqu
 				// ---------------- FIN SECCION: de Parámetros Generales del Formulario ----------------------------
 				// ----------------INICIAR EL FORMULARIO ------------------------------------------------------------
 				$atributos ['tipoEtiqueta'] = 'inicio';
+                $atributos = array_merge ( $atributos, $atributosGlobales );
 				echo $this->miFormulario->formulario ( $atributos );
+                unset($atributos);
 				?>
 
 				<div class="input-row">
@@ -62,6 +70,7 @@ $rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloqu
 						$atributos ['dobleLinea'] = false;
 						$atributos ['tabIndex'] = $tab;
 						$atributos ['textoFondo'] = $this->lenguaje->getCadena ( $esteCampo );
+						$atributos ['placeholder'] = $this->lenguaje->getCadena ( $esteCampo );
 						$atributos ['validar'] = 'required';
 						if (isset ( $_REQUEST [$esteCampo] )) {
 							$atributos ['valor'] = $_REQUEST [$esteCampo];
@@ -111,31 +120,51 @@ $rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloqu
 				</div>
 
 				<div class="button-row">
-					<button id="submit-btn" type="submit">Ingresar</button>
+						<?php					
+			                // -----------------CONTROL: Botón ----------------------------------------------------------------
+			                $esteCampo = 'botonIngresar';
+			                $atributos ["id"] = $esteCampo;
+			                $atributos ["tabIndex"] = $tab;
+			                $atributos ["tipo"] = 'boton';
+			                // submit: no se coloca si se desea un tipo button genérico
+			                $atributos ['submit'] = true;
+			                $atributos ["estiloMarco"] = '';
+			                $atributos ["estiloBoton"] = '';
+			                // verificar: true para verificar el formulario antes de pasarlo al servidor.
+			                $atributos ["verificar"] = true;
+			                $atributos ["tipoSubmit"] = ''; // Dejar vacio para un submit normal, en este caso se ejecuta la función submit declarada en ready.js
+			                $atributos ["valor"] = $this->lenguaje->getCadena($esteCampo);
+			                $atributos ['nombreFormulario'] = $esteBloque ['nombre'];
+			                $tab ++;
+			                // Aplica atributos globales al control
+			                $atributos = array_merge($atributos, $atributosGlobales);
+			                echo $this->miFormulario->campoBoton($atributos);
+			                unset($atributos);
+						?>
 				</div>
 				<?php
 				// En este formulario se utiliza el mecanismo (b) para pasar las siguientes variables:
 				// Paso 1: crear el listado de variables
-				$valorCodificado = "action=" . $esteBloque ["nombre"];
-				$valorCodificado .= "&pagina=" . $this->miConfigurador->getVariableConfiguracion ( 'pagina' );
-				$valorCodificado .= "&bloque=" . $esteBloque ['nombre'];
-				$valorCodificado .= "&bloqueGrupo=" . $esteBloque ["grupo"];
-				$valorCodificado .= "&opcion=login";
+				$valorCodificado = 'action=' . $esteBloque ['nombre'];
+				$valorCodificado .= '&pagina=' . $this->miConfigurador->getVariableConfiguracion ( 'pagina' );
+				$valorCodificado .= '&bloque=' . $esteBloque ['nombre'];
+				$valorCodificado .= '&bloqueGrupo=' . $esteBloque ['grupo'];
+				$valorCodificado .= '&opcion=login';
 				/**
 				 * SARA permite que los nombres de los campos sean dinámicos.
 				 * Para ello utiliza la hora en que es creado el formulario para
 				 * codificar el nombre de cada campo.
 				 */
-				$valorCodificado .= "&campoSeguro=" . $_REQUEST ['tiempo'];
+				$valorCodificado .= '&campoSeguro=' . $_REQUEST ['tiempo'];
 				// Paso 2: codificar la cadena resultante
 				$valorCodificado = $this->miConfigurador->fabricaConexiones->crypto->codificar ( $valorCodificado );
-				$atributos ["id"] = "formSaraData"; // No cambiar este nombre
-				$atributos ["tipo"] = "hidden";
+				$atributos ['id'] = 'formSaraData'; // No cambiar este nombre
+				$atributos ['tipo'] = 'hidden';
 				$atributos ['estilo'] = '';
-				$atributos ["obligatorio"] = false;
+				$atributos ['obligatorio'] = false;
 				$atributos ['marco'] = true;
-				$atributos ["etiqueta"] = "";
-				$atributos ["valor"] = $valorCodificado;
+				$atributos ['etiqueta'] = '';
+				$atributos ['valor'] = $valorCodificado;
 				echo $this->miFormulario->campoCuadroTexto ( $atributos );
 				unset ( $atributos );
 				// ----------------FIN SECCION: Paso de variables -------------------------------------------------
@@ -145,10 +174,12 @@ $rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloqu
 				$atributos ['marco'] = true;
 				$atributos ['tipoEtiqueta'] = 'fin';
 				echo $this->miFormulario->formulario ( $atributos );
-				$directorio = $this->miConfigurador->getVariableConfiguracion ( "host" );
-				$directorio .= $this->miConfigurador->getVariableConfiguracion ( "site" ) . "/index.php?";
-				$directorio .= $this->miConfigurador->getVariableConfiguracion ( "enlace" );
-				$enlace = 'pagina=registroUsuario';
+				
+				//Url registro de usuarios
+				$directorio = $this->miConfigurador->getVariableConfiguracion ( 'host' );
+				$directorio .= $this->miConfigurador->getVariableConfiguracion ( 'site' ) . '/index.php?';
+				$directorio .= $this->miConfigurador->getVariableConfiguracion ( 'enlace' );
+				$enlace = 'pagina=recuperarContraseña';
 				$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
 				?>
 
@@ -194,8 +225,8 @@ $rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloqu
 		<hr>
 		<div class="noticia_index">
 			<font color="RED"> <b>HORARIOS 2016-1</b> <br>
-			</font> <a target="_blank"
-				href="https://www.dropbox.com/sh/61jzu4e33xaqa18/AACQOWdyMIBmIuH7pAwOPPspa?dl=0">Descargar...</a>.
+			</font>
+			<a target="_blank" href="https://www.dropbox.com/sh/61jzu4e33xaqa18/AACQOWdyMIBmIuH7pAwOPPspa?dl=0">Descargar...</a>.
 		</div>
 
 		<hr>

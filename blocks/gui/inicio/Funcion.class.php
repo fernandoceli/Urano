@@ -1,6 +1,6 @@
 <?php
 
-namespace gui\accesoIncorrecto;
+namespace gui\inicio;
 
 if (! isset ( $GLOBALS ["autorizado"] )) {
 	include ("../index.php");
