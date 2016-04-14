@@ -1,6 +1,6 @@
 <?php
 
-namespace gui\accesoIncorrecto;
+namespace gui\home;
 
 // Evitar un acceso directo a este archivo
 if (! isset ( $GLOBALS ["autorizado"] )) {
@@ -31,6 +31,7 @@ include_once ("Lenguaje.class.php");
 
 // Para evitar redefiniciones de clases el nombre de la clase del archivo bloque debe corresponder al nombre del bloque
 // precedida por la palabra Bloque
+
 class Bloque implements \Bloque {
 	var $nombreBloque;
 	var $miFuncion;
@@ -58,8 +59,11 @@ class Bloque implements \Bloque {
 		$this->miConfigurador->setVariableConfiguracion ( "rutaUrlBloque", $rutaURL );
 		
 		$this->miFuncion = new Funcion ();
+		
 		$this->miSql = new Sql ();
+		
 		$this->miFrontera = new Frontera ();
+		
 		$this->miLenguaje = new Lenguaje ();
 	}
 	public function bloque() {

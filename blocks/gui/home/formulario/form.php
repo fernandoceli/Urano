@@ -1,6 +1,6 @@
 <?php
 
-namespace gui\accesoIncorrecto;
+namespace gui\home;
 
 if (! isset ( $GLOBALS ["autorizado"] )) {
 	include ("../index.php");
@@ -50,6 +50,9 @@ class Formulario {
 		$conexion = 'estructura';
 		$esteRecurso = $this->miConfigurador->fabricaConexiones->getRecursoDB ( $conexion );
 		
+		$conexionOracle = "academica";
+		$esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB ( $conexionOracle );
+		
 		$usuario = $this->miSesion->getSesionUsuarioId ();
 		
 		// -------------------------------------------------------------------------------------------------
@@ -90,181 +93,181 @@ class Formulario {
 <!-- Page Content -->
 <div class="container">
 
-	<hr>
-
+	<!-- row -->
 	<div class="row">
 		<div class="col-sm-6">
-			<h1>Horario Clase</h1>
-			<img src="<?php echo $rutaUrlBloque.'images/horario.png'?>"
-				alt="Perfil" class="img-responsive img-rounded" style="width: 100%;" />
+			<h1>Horario de Clase</h1>
+			<?php
+		include 'horario.php';
+		?>
+
 		</div>
-		<div class="col-sm-6">
-			<h1>Notificaciones</h1>
-			<img src="<?php echo $rutaUrlBloque.'images/notificaciones.png'?>"
-				alt="Perfil" class="img-responsive img-rounded" style="width: 100%;" />
+
+		<div id="col-noti" class="col-sm-6">
+			<h1>Noticias</h1>
+			
+	<?php
+	
+		$atributos['estilo'] = 'btn-group';
+		$atributos['id'] = 'botones-noticias';
+		echo $this->miFormulario->division("inicio", $atributos);
+		unset($atributos);
+		
+		// -----------------INICIO CONTROL: Bot髇 ------------------------------------------
+		$esteCampo = 'botonSubir';
+		$atributos ['id'] = $esteCampo;
+		$atributos ['tabIndex'] = $tab;
+		$atributos ['tipo'] = 'boton';
+		$atributos ['estiloBoton'] = 'btnUp btn btn-default';
+		$atributos ["cancelar"] = true;
+		$atributos ['onClick'] = '';
+		$atributos ['sinDivision'] = true;
+		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
+		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
+		$tab++;
+		// Aplica atributos globales al control
+		$atributos = array_merge ( $atributos, $atributosGlobales );
+		echo $this->miFormulario->campoBoton ( $atributos );
+		unset ( $atributos );
+		// -----------------FIN CONTROL: Bot髇 ---------------------------------------
+		
+		// -----------------INICIO CONTROL: Bot髇 ------------------------------------------
+		$esteCampo = 'botonBajar';
+		$atributos ['id'] = $esteCampo;
+		$atributos ['tabIndex'] = $tab;
+		$atributos ['tipo'] = 'boton';
+		$atributos ['estiloBoton'] = 'btnDown btn btn-info';
+		$atributos ["cancelar"] = true;
+		$atributos ['onClick'] = '';
+		$atributos ['sinDivision'] = true;
+		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
+		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
+		$tab++;
+		// Aplica atributos globales al control
+		$atributos = array_merge ( $atributos, $atributosGlobales );
+		echo $this->miFormulario->campoBoton ( $atributos );
+		unset ( $atributos );
+		// -----------------FIN CONTROL: Bot髇 ---------------------------------------
+		
+		// -----------------INICIO CONTROL: Bot髇 ------------------------------------------
+		$esteCampo = 'botonToggle';
+		$atributos ['id'] = $esteCampo;
+		$atributos ['tabIndex'] = $tab;
+		$atributos ['tipo'] = 'boton';
+		$atributos ['estiloBoton'] = 'btnToggle btn btn-success';
+		$atributos ["cancelar"] = true;
+		$atributos ['onClick'] = '';
+		$atributos ['sinDivision'] = true;
+		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
+		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
+		$tab++;
+		// Aplica atributos globales al control
+		$atributos = array_merge ( $atributos, $atributosGlobales );
+		echo $this->miFormulario->campoBoton ( $atributos );
+		unset ( $atributos );
+		// -----------------FIN CONTROL: Bot髇 ---------------------------------------
+		
+		// -----------------INICIO CONTROL: Bot髇 ------------------------------------------
+		$esteCampo = 'botonVerMas';
+		$atributos ['id'] = $esteCampo;
+		$atributos ['tabIndex'] = $tab;
+		$atributos ['tipo'] = 'boton';
+		$atributos ['estiloBoton'] = 'btnVerMas btn btn-warning';
+		$atributos ["cancelar"] = true;
+		$atributos ['onClick'] = '';
+		$atributos ['sinDivision'] = true;
+		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
+		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
+		$tab++;
+		// Aplica atributos globales al control
+		$atributos = array_merge ( $atributos, $atributosGlobales );
+		echo $this->miFormulario->campoBoton ( $atributos );
+		unset ( $atributos );
+		// -----------------FIN CONTROL: Bot髇 ---------------------------------------
+		
+		// -----------------INICIO CONTROL: Bot髇 ------------------------------------------
+		$esteCampo = 'botonVerMenos';
+		$atributos ['id'] = $esteCampo;
+		$atributos ['tabIndex'] = $tab;
+		$atributos ['tipo'] = 'boton';
+		$atributos ['estiloBoton'] = 'btnVerMenos btn btn-primary';
+		$atributos ["cancelar"] = true;
+		$atributos ['onClick'] = '';
+		$atributos ['sinDivision'] = true;
+		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
+		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
+		$tab++;
+		// Aplica atributos globales al control
+		$atributos = array_merge ( $atributos, $atributosGlobales );
+		echo $this->miFormulario->campoBoton ( $atributos );
+		unset ( $atributos );
+		// -----------------FIN CONTROL: Bot髇 ---------------------------------------
+		
+		echo $this->miFormulario->division("fin");
+		
+		include 'noticias.php';
+		?>
 		</div>
 	</div>
 	<!-- /.row -->
 
+	<!-- row -->
 	<div class="row">
-		<div class="col-sm-6">
+		<div class="col-sm-12">
 			<h1>Servicios m谩s usados</h1>
 			<div class="row text-center">
-				<div class="col-xs-4">
+				<div class="col-xs-4 col-md-2">
 					<img src="<?php echo $rutaUrlBloque.'images/mi_plan_trabajo.png'?>"
 						alt="Perfil" class="img-responsive" style="width: 100%;" />
-					<h3 class="hidden-xs">Mi plan de Trabajo</h3>
-					<h5 class="hidden-sm hidden-md hidden-lg">Mi plan de Trabajo</h5>
-					<hr>
+					<h3 class="hidden-xs hidden-sm">Mi plan de Trabajo</h3>
+					<h5 class="hidden-md hidden-lg">Mi plan de Trabajo</h5>
+					<hr></hr>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-xs-4 col-md-2">
 					<img src="<?php echo $rutaUrlBloque.'images/asignaturas.png'?>"
 						alt="Perfil" class="img-responsive" style="width: 100%;" />
-					<h3 class="hidden-xs">Asignaturas</h3>
-					<h5 class="hidden-sm hidden-md hidden-lg">Asignaturas</h5>
-					<hr>
+					<h3 class="hidden-xs hidden-sm">Asignaturas</h3>
+					<h5 class="hidden-md hidden-lg">Asignaturas</h5>
+					<hr></hr>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-xs-4 col-md-2">
 					<img
 						src="<?php echo $rutaUrlBloque.'images/resultados_evaluacion.png'?>"
 						alt="Perfil" class="img-responsive" style="width: 100%;" />
-					<h3 class="hidden-xs">Resultados Evaluaci贸n</h3>
-					<h5 class="hidden-sm hidden-md hidden-lg">Resultados Evaluaci贸n</h5>
-					<hr>
+					<h3 class="hidden-xs hidden-sm">Resultados Evaluaci贸n</h3>
+					<h5 class="hidden-md hidden-lg">Resultados Evaluaci贸n</h5>
+					<hr></hr>
 				</div>
-			</div>
-			<!-- /.row -->
-			<div class="row text-center">
-				<div class="col-xs-4">
+				<div class="col-xs-4 col-md-2">
 					<img
 						src="<?php echo $rutaUrlBloque.'images/produccion_academica.png'?>"
 						alt="Perfil" class="img-responsive" style="width: 100%;" />
-					<h3 class="hidden-xs">Producci贸n Acad茅mica</h3>
-					<h5 class="hidden-sm hidden-md hidden-lg">Producci贸n Acad茅mica</h5>
-					<hr>
+					<h3 class="hidden-xs hidden-sm">Producci贸n Acad茅mica</h3>
+					<h5 class="hidden-md hidden-lg">Producci贸n Acad茅mica</h5>
+					<hr></hr>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-xs-4 col-md-2">
 					<img src="<?php echo $rutaUrlBloque.'images/autoevaluacion.png'?>"
 						alt="Perfil" class="img-responsive" style="width: 100%;" />
-					<h3 class="hidden-xs">Autoevaluaci贸n</h3>
-					<h5 class="hidden-sm hidden-md hidden-lg">Autoevaluaci贸n</h5>
-					<hr>
+					<h3 class="hidden-xs hidden-sm">Autoevaluaci贸n</h3>
+					<h5 class="hidden-md hidden-lg">Autoevaluaci贸n</h5>
+					<hr></hr>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-xs-4 col-md-2">
 					<img src="<?php echo $rutaUrlBloque.'images/lista_clase.png'?>"
 						alt="Perfil" class="img-responsive" style="width: 100%;" />
-					<h3 class="hidden-xs">Lista de Clase</h3>
-					<h5 class="hidden-sm hidden-md hidden-lg">Lista de Clase</h5>
-					<hr>
+					<h3 class="hidden-xs hidden-sm">Lista de Clase</h3>
+					<h5 class="hidden-md hidden-lg">Lista de Clase</h5>
+					<hr></hr>
 				</div>
+
 			</div>
-			<!-- /.row -->
 		</div>
-		<div class="col-sm-6">
-			<h1>Noticias</h1>
-
-			<!-- prueba-plugin noticias -->
-	
-	<?php
-		
-		$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "buscarNoticias", $usuario );
-		$matrizNoticias = $esteRecurso->ejecutarAcceso ( $atributos ['cadena_sql'], "busqueda" );
-		
-		$esteCampo = 'noticias';
-		$atributos ['id'] = $esteCampo;
-		$atributos ['estiloEnLinea'] = 'width: 100%; height: 90%; overflow-y: scroll;';
-		echo $this->miFormulario->division ( "inicio", $atributos );
-		unset ( $atributos );
-		
-		$esteCampo = "noti";
-		$atributos ['id'] = $esteCampo;
-		$atributos ['estilo'] = "demo2 demof";
-		echo $this->miFormulario->division ( "inicio", $atributos );
-		unset ( $atributos );
-		
-		echo "<ul>";
-		
-		// var_dump($matrizNoticias);
-		
-		if ($matrizNoticias) {
-			
-			foreach ( $matrizNoticias as $noticia ) {
-				
-				echo "<li>";
-				
-				$pordefecto = $rutaUrlBloque . "images/silueta.gif";
-				
-				$imagen = "<img id='foto-noti' ";
-				
-				if ($noticia ['noti_img_usr_enlace']) {
-					$imagen .= "src=" . $rutaUrlBloque . "images/" . trim ( $noticia ['noti_img_usr_enlace'] ) . "";
-				} else {
-					$imagen .= "src=" . $pordefecto;
-				}
-				
-				$imagen .= " alt='" . $noticia ['noti_usr_remi'] . "' title='" . $noticia ['noti_usr_remi'] . "'>";
-				
-				echo $imagen;
-				
-				$atributos ['id'] = 'enlacetitulo';
-				$atributos ['enlace'] = "#";
-				$atributos ['enlaceTitulo'] = "Prueba";
-				$atributos ['enlaceTexto'] = $noticia ['noti_nombre'];
-				echo $this->miFormulario->enlace ( $atributos );
-				
-				echo "<p id='texto'>";
-				
-				$descrip = trim ( $noticia ['noti_descripcion'] );
-				
-				if ($noticia ['noti_enlace']) {
-					$descrip = str_replace ( "[", "<a id='enlaceinterno' href='" . trim ( $noticia ['noti_enlace'] ) . "'>", $descrip );
-				} else {
-					$descrip = str_replace ( "[", "<a id='enlaceinterno' href=''>", $descrip );
-				}
-				$descrip = str_replace ( "]", "</a>", $descrip );
-				
-				echo $descrip;
-				
-				echo "</p>";
-				
-				echo "<p id='fecha'>";
-				
-				$auxfecha = trim ( $noticia ['noti_fradicacion'] );
-				
-				$auxfecha = explode ( " ", $auxfecha );
-				
-				$auxfecha2 = $auxfecha [0];
-				
-				$auxfecha2 = explode ( "-", $auxfecha2 );
-				
-				$f ['anio'] = $auxfecha2 [0];
-				$f ['mes'] = $auxfecha2 [1];
-				$f ['dia'] = $auxfecha2 [2];
-				$f ['hora'] = $auxfecha [1];
-				
-				echo fecha_es ( $f );
-				
-				echo "</p>";
-				
-				echo "</li>";
-			}
-		}
-		
-		echo "</ul>";
-		
-		echo $this->miFormulario->division ( "fin" );
-		
-		?>
-		
-	</div>
-		<!-- col -->
 
 	</div>
-	<!-- fin prueba plugin -->
+	<!-- fin row -->
 
 </div>
-</div>
-<!-- /.row -->
 
 </div>
 <!-- /.container -->
@@ -361,21 +364,4 @@ $miFormulario = new Formulario ( $this->lenguaje, $this->miFormulario, $this->sq
 $miFormulario->formulario ();
 $miFormulario->mensaje ();
 
-function fecha_es($fecha) {
-	$meses = array (
-			'01' => 'Enero',
-			'02' => 'Febrero',
-			'03' => 'Marzo',
-			'04' => 'Abril',
-			'05' => 'Mayo',
-			'06' => 'Junio',
-			'07' => 'Julio',
-			'08' => 'Agosto',
-			'09' => 'Septiembre',
-			'10' => 'Octubre',
-			'11' => 'Noviembre',
-			'12' => 'Diciembre' 
-	);
-	return $meses [$fecha ['mes']] . " " . $fecha ['dia'] . ", " . $fecha ['anio'] . " - " . $fecha ['hora'];
-}
 ?>

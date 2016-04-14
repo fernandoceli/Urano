@@ -4,6 +4,7 @@ echo '<meta name="viewport" content="width=device-width">';
 $indice=0;
 $estilo=array();
 $estilo[$indice++]="estiloHome.css";
+$estilo[$indice++]="estiloBloque.css";
 
 $rutaBloque=$this->miConfigurador->getVariableConfiguracion("host");
 $rutaBloque.=$this->miConfigurador->getVariableConfiguracion("site");

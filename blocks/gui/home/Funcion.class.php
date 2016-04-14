@@ -1,6 +1,6 @@
 <?php
 
-namespace gui\accesoIncorrecto;
+namespace gui\home;
 
 if (! isset ( $GLOBALS ["autorizado"] )) {
 	include ("../index.php");
@@ -70,6 +70,10 @@ class Funcion {
 		
 		// Importante: Es adecuado que sea una variable llamada opcion o action la que guie el procesamiento:
 		
+		if (isset ( $_REQUEST ['procesarAjax'] )) {
+			$this->procesarAjax ();
+		}
+		
 		if (isset ( $_REQUEST ['opcion'] )) {		
 			switch ($_REQUEST ['opcion']) {		
 				case "logout" :
@@ -81,7 +85,7 @@ class Funcion {
 			}
 		} else {
 			$_REQUEST ['opcion'] = "mostrar";
-			include_once ($this->ruta . "/funcion/formProcessor.php");
+			//include_once ($this->ruta . "/funcion/formProcessor.php");
 		}
 		
 		return $resultado;

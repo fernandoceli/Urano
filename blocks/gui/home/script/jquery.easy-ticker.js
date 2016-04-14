@@ -38,7 +38,7 @@
 		s.winFocus = 1;
 		
 		init();
-		start();
+//		start();
 		
 		$([window, document]).off('focus.jqet').on('focus.jqet', function(){
 			s.winFocus = 1;

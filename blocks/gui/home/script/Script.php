@@ -29,6 +29,6 @@ if (isset ( $funcion [0] )) {
 	}
 }
 
-// include 'ajaax.php';
+include 'ajax.php';
 
 ?>
