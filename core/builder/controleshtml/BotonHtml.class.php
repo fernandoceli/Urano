@@ -74,8 +74,6 @@ class BotonHtml extends HtmlBase{
                 // El cuadro de Texto asociado
                 $this->cadenaBoton .= $this->cuadroAsociado();
                 
-                
-                
             } else {
     
                 $this->cadenaBoton .= $this->atributoOnclickBoton ();
@@ -108,7 +106,6 @@ class BotonHtml extends HtmlBase{
             $cadena .= " $(this).closest('form').submit();";
         } else {
             if (! isset ( $this->atributos [self::ONCLICK] )) {
-    
                 $cadena .= "onclick=\"document.forms['" . $this->atributos [self::NOMBREFORMULARIO] . "'].elements['" . $this->atributos [self::ID] . "'].value='true';";
                 $cadena .= "document.forms['" . $this->atributos [self::NOMBREFORMULARIO] . "'].submit()";
             }

@@ -1,7 +1,8 @@
 <?php
 
 $indice=0;
-//$funcion[$indice++]="jquery.dcmegamenu.1.3.3.js";
+$funcion=array();
+//$funcion[$indice++]="typeahead.js";
 
 
 $rutaBloque=$this->miConfigurador->getVariableConfiguracion("host");

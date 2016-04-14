@@ -2,8 +2,8 @@
 
 namespace gui\pieDePagina\formulario;
 
-include_once ($this->ruta . "/builder/DibujarMenu.class.php");
-use gui\menuPrincipal\builder\Dibujar;
+// include_once ($this->ruta . "/builder/DibujarMenu.class.php");
+// use gui\menuPrincipal\builder\Dibujar;
 if (! isset ( $GLOBALS ["autorizado"] )) {
 	include ("../index.php");
 	exit ();
@@ -25,8 +25,6 @@ class FormularioMenu {
 		$this->miFormulario = $formulario;
 		
 		$this->miSql = $sql;
-		
-		$this->miSesionSso = \SesionSso::singleton ();
 	}
 	function formulario() {
 		
@@ -41,6 +39,8 @@ class FormularioMenu {
 		$rutaBloque = $this->miConfigurador->getVariableConfiguracion ( "host" );
 		$rutaBloque .= $this->miConfigurador->getVariableConfiguracion ( "site" ) . "/blocks/";
 		$rutaBloque .= $esteBloque ['grupo'] . '/' . $esteBloque ['nombre'];
+		
+		
 		/**
 		 * IMPORTANTE: Este formulario está utilizando jquery.
 		 * Por tanto en el archivo ready.php se delaran algunas funciones js
@@ -90,128 +90,19 @@ class FormularioMenu {
 		$tab = 1;
 		// ---------------- FIN SECCION: de Parámetros Generales del Formulario ----------------------------
 		
-		$conexion = "estructura";
-		$esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB($conexion);
+		// $conexion = "estructura";
+		// $esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB($conexion);
 		
 		// ----------------INICIAR EL FORMULARIO ------------------------------------------------------------
 		$atributos ['tipoEtiqueta'] = 'inicio';
-// 		$atributos = array_merge ( $atributos, $atributosGlobales );
+ 		$atributos = array_merge ( $atributos, $atributosGlobales );
 		echo $this->miFormulario->formulario ( $atributos );
 		unset ( $atributos );
 		// ---------------- SECCION: Controles del Formulario -----------------------------------------------
 		
-		$respuesta = $this->miSesionSso->getParametrosSesionAbierta();
+		$rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloque" );
+		include('footer.html.php');
 		
-		$cadenaSql = $this->miSql->getCadenaSql ( "datosMenu", $respuesta['perfil'] );
-		$datosMenu = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, "busqueda" );
-
-
-		
-// 		foreach ( $datosMenu as $menu => $item ) {
-// 			if(strcmp($item['tipo_enlace'], 'submenu_enlace_interno') == 0){
-// 				$enlace = '#';
-// 				$enlaces [$this->lenguaje->getCadena ($item ['menu'])]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-// 			}elseif(strcmp($item['tipo_enlace'], 'enlace_interno') == 0){
-// 				$enlace = 'pagina=' . $item ['enlace'].$item['parametros'];
-// 				$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// 				$enlaces [$this->lenguaje->getCadena ($item ['menu'])]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-// 			}
-// 			elseif(strcmp($item['tipo_enlace'], 'enlace_externo') == 0){
-// 				$enlace = $item ['enlace'];
-// 				//$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// 				$enlaces [$this->lenguaje->getCadena ($item ['menu'])]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-// 			}
-// 		}
-		
-// 		foreach ( $datosMenu as $menu => $item ) {
-// 			if(strcmp($item['tipo_enlace'], 'submenu_enlace_interno') == 0){
-// 				$enlace = '#';
-// 				$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;	
-// 			}elseif(strcmp($item['tipo_enlace'], 'enlace_interno') == 0){				
-// 				$enlace = 'pagina=' . $item ['enlace'].$item['parametros'];		
-// 				$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// 				$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;					
-// 			}
-
-// 		foreach ( $datosMenu as $menu => $item ) {
-// 			if(strcmp($item['tipo_enlace'], 'menu_enlace_interno') == 0){
-// 				//Enlace de menú siempre se codifica?
-// 				$enlace = 'pagina=' . $item ['enlace'].$item['parametros'];
-// 				$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// 				$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-// 			}elseif(strcmp($item['tipo_enlace'], 'submenu_enlace_interno') == 0){
-// 				//Enlace de submenú nunca se codifica?
-// 				$enlace = '#';
-// 				$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-// 			}elseif(strcmp($item['tipo_enlace'], 'enlace_interno') == 0){
-// 				//Enlace normal siempre se codifica?
-// 				$enlace = 'pagina=' . $item ['enlace'].$item['parametros'];
-// 				$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// 				$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-// 			}
-// // 			elseif(strcmp($item['tipo_enlace'], 'submenu_enlace_interno') == 0){
-// // 				$enlace = 'pagina=' . $item ['menu'];
-// // 				$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// // 				$nombrePagina = $this->lenguaje->getCadena ( $item ['menu'] );
-// // 				$enlaces [$nombrePagina] = $enlace;
-// // 			}elseif(strcmp($item['tipo_enlace'], 'enlace_interno') == 0){
-// // 				$enlace = $item ['externo'];
-// // 				//$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-// // 				$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['tipo_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;						
-// // 			}
-// 		}
-		
-		/*
-		 * Se generan la estructura de un arreglo 3dimensional y se llena con arreglos vacíos.
-		 */
-		foreach ( $datosMenu as $menu => $item ) {
-			$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['clase_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = array ();
-		}
-		
-		foreach ( $datosMenu as $menu => $item ) {
-			//Se instancia el enlace como # que significa que el enlace no existe inicialmente.
-			$enlace = '#';
-			//Dependiendo de la clase del enlace (menú, submenú, normal) se da un enlace al componente.
-			switch($item['clase_enlace']){
-				case 'menu'://Cuando el enlace es clase menú.
-					//Dependiendo del tipo de enlace (interno o externo) se codifica o no el enlace.
-					switch($item['tipo_enlace']){
-						case 'interno'://Cuando el enlace del menú es de tipo interno.
-							$enlace = 'pagina=' . $item ['enlace'].$item['parametros'];
-							$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-							break;
-						case 'externo':
-							$enlace = $item ['enlace'].$item['parametros'];
-							break;
-					}
-					break;
-				case 'submenu':
-					switch($item['tipo_enlace']){
-						case 'interno'://Cuando el enlace del submenú es de tipo interno.
-							$enlace = '#';
-							break;
-						case 'externo':
-							$enlace = '#';
-							break;
-					}
-					break;
-				case 'normal':
-					switch($item['tipo_enlace']){
-						case 'interno'://Cuando el enlace normal es de tipo interno.
-							$enlace = 'pagina=' . $item ['enlace'].$item['parametros'];
-							$enlace = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $enlace, $directorio );
-							break;
-						case 'externo':
-							
-							break;
-					}
-				break;
-			}
-			$enlaces ['menu'.$item ['menu']]['columna'. $item ['columna']][$item ['clase_enlace']][$this->lenguaje->getCadena ($item ['titulo'])] = $enlace;
-		}
-		$atributos ['enlaces'] = $enlaces;
-		$crearMenu = new Dibujar ();
-		echo $crearMenu->html ( $atributos );
 		
 		// ------------------- SECCION: Paso de variables ------------------------------------------------
 		

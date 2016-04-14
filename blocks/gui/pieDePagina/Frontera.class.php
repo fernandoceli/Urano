@@ -48,14 +48,12 @@ class Frontera{
 
 	function html()
 	{
-		
 		include_once("core/builder/FormularioHtml.class.php");
 		
 		$this->ruta=$this->miConfigurador->getVariableConfiguracion("rutaBloque");
 		
 		$this->miFormulario=new \FormularioHtml();
-		include_once($this->ruta."/formulario/footer.html.php");	
-
+		include_once($this->ruta."/formulario/form.php");
 	}
 }
 ?>

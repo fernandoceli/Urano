@@ -3,7 +3,7 @@ $indice=0;
 $estilo=array();
 // $estilo[$indice++]="bootstrap-social.css";
 // $estilo[$indice++]="font-awesome.css";
-// $estilo[$indice++]="styles.css";
+$estilo[$indice++]="style.css";
 
 $rutaBloque=$this->miConfigurador->getVariableConfiguracion("host");
 $rutaBloque.=$this->miConfigurador->getVariableConfiguracion("site");

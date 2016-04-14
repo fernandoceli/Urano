@@ -1,6 +1,3 @@
-<?php
-$rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloque" );
-?>
 <!-- Page Content -->
   <div class="container">
   <!-- Footer -->
@@ -9,7 +6,8 @@ $rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloqu
         <div class="row">
           <div class="col-lg-6">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Buscar servicios...">
+              <input id="searchservice" type="text" class="form-control" placeholder="Buscar servicios...">
+              <div id="livesearch"></div>
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button">Ir!</button>
               </span>
