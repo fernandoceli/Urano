@@ -38,11 +38,13 @@
 													<?php if ($this->atributos ['estadoNotificacion'][$i] == 1):?>
 														<tr class="notificacion-tr ntf-pen">
 													<?php endif;?>
-															<td>
+															<td id="td-izq-ntf">
 																<img id="foto-notifi" alt="<?php echo $this -> atributos['imgaltNotificacion'][$i]; ?>" title="<?php echo $this -> atributos['imgaltNotificacion'][$i]; ?>" src="<?php echo $this -> atributos['imgsrcNotificacion'][$i]; ?>">
 															</td>
-															<td>
-																<a id="enlacetitulonotifi" href="#" title="<?php echo $this -> atributos['tituloNotificacion'][$i]; ?>"><?php echo $this -> atributos['tituloNotificacion'][$i]; ?></a>
+															<td id="td-der-ntf">
+																<p id="p-enlace-titulo">
+																	<a id="enlacetitulonotifi" href="#" title="<?php echo $this -> atributos['tituloNotificacion'][$i]; ?>"><?php echo $this -> atributos['tituloNotificacion'][$i]; ?></a>
+																</p>
 																<p id='textonotifi'> <?php echo $this -> atributos['descripNotificacion'][$i]; ?> </p>
 																<div>
 																	<p id='fechanotifi'> 
@@ -64,7 +66,7 @@
 							<?php endif; ?>
 						</ul>						
 						<br>						
-						<h1 class="closesession"><a href="#">Cerrar Sesión</a></h1>
+						<h1 class="closesession"><a href="<?php echo $this -> atributos['enlace_cerrar_sesion']; ?>">Cerrar Sesión</a></h1>
 					</div>
 					<div class="col-lg-2">
 						<img src="<?php echo $this -> atributos['url_foto_perfil']; ?>" alt="Perfil" class="hidden-xs hidden-sm hidden-md img-responsive img-rounded profilepicture" />

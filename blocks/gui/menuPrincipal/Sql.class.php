@@ -226,6 +226,35 @@ class Sql extends \Sql {
 				$cadenaSql .= "and cla_estado='A' ";
 				$cadenaSql .= "ORDER BY cla_estado,cla_tipo_usu";
 				break;
+			case 'buscarRol':
+				$cadenaSql=" SELECT";
+				$cadenaSql.=" `nombre`,";
+				$cadenaSql.=" `servidor`,";
+				$cadenaSql.=" `puerto`,";
+				$cadenaSql.=" `ssl`,";
+				$cadenaSql.=" `db`,";
+				$cadenaSql.=" `usuario`, ";
+				$cadenaSql.=" `password`,";
+				$cadenaSql.=" `dbms`";
+				$cadenaSql.=" FROM";
+				$cadenaSql.=" dbms_dbms";
+				$cadenaSql.=" WHERE";
+				$cadenaSql.=" nombre='".$variable."';";
+				//$cadenaSql.=" true";
+				break;
+				
+			case "buscarPerfilesUsuario" :
+				$cadenaSql=" SELECT";
+				$cadenaSql.=" cla_codigo COD,";
+				$cadenaSql.=" cla_clave PWD,";
+				$cadenaSql.=" cla_tipo_usu TIP_US,";
+				$cadenaSql.=" cla_estado EST";
+				$cadenaSql.=" FROM";
+				$cadenaSql.=" " . $variable['sql_tabla1'];
+				$cadenaSql.=" WHERE";
+				$cadenaSql.=" cla_codigo='" . $variable['usuario'] . "'";
+				$cadenaSql.=" ORDER BY cla_estado,cla_tipo_usu";
+				break;
 			
 			case 'datosFuncionario' :
 				$cadenaSql = " SELECT cta_usu_id,";

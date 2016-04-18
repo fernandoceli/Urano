@@ -15,6 +15,8 @@ class FormularioMenu {
 	var $lenguaje;
 	var $miFormulario;
 	var $miSql;
+	var $miEncriptador;
+	
 	function __construct($lenguaje, $formulario, $sql) {
 		$this->miConfigurador = \Configurador::singleton ();
 		
@@ -25,6 +27,10 @@ class FormularioMenu {
 		$this->miFormulario = $formulario;
 		
 		$this->miSql = $sql;
+		// Se crea una instancia del objeto encriptador.
+		$this->miEncriptador = new encriptar ( $this->miSql );
+		
+		$this->configuracion_appserv = $this->miEncriptador->getConfiguracion();
 	}
 	function formulario() {
 		
@@ -41,8 +47,7 @@ class FormularioMenu {
 		$rutaBloque .= $esteBloque ['grupo'] . '/' . $esteBloque ['nombre'];
 		$rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "rutaUrlBloque" );
 		
-		// Se crea una instancia del objeto encriptador.
-		$miEncriptador = new encriptar ( $this->miSql );
+		
 		
 		/**
 		 * Comienza sección de variables necesarias para los enlaces
@@ -51,26 +56,70 @@ class FormularioMenu {
 		$usuario = $_REQUEST ['usuario'];
 		// $usuario = 79708124;
 		// $usuario = $_SESSION ['usuario_login'];
-		$tokenSaraAcademica = $miEncriptador->codificar_sara ( 'condorSara2013!' );
-		$tokenSaraAdministrativa = $miEncriptador->codificar_sara ( 's4r44dm1n1str4t1v4C0nd0r2014!' );
-		$tokenSaraDocencia = $miEncriptador->codificar_sara ( 'condorSara2013' );
+		$tokenSaraAcademica = $this->miEncriptador->codificar_sara ( 'condorSara2013!' );
+		$tokenSaraAdministrativa = $this->miEncriptador->codificar_sara ( 's4r44dm1n1str4t1v4C0nd0r2014!' );
+		$tokenSaraDocencia = $this->miEncriptador->codificar_sara ( 'condorSara2013' );
 		$tiempo = time ();
 		/**
 		 * Termina sección de variables necesarias para los enlaces
 		 */
+		 
 		// consultar los roles que están asignados al usuario
-		$conexion = 'academica_ac';
-		$esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB ( $conexion );
+		// $conexion = 'academica_ac';
+		// $esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB ( $conexion );
+		// $cadenaSql = $this->miSql->getCadenaSql ( 'perfilesUsuario', $usuario );
+		// $datosPerfiles = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, 'busqueda' );
+		// $esteRecursoDB->desconectar_db();
+		// $perfiles = array_column ( $datosPerfiles, 'TIP_US' );
 		
-		$cadenaSql = $this->miSql->getCadenaSql ( 'perfilesUsuario', $usuario );
-		$datosPerfiles = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, 'busqueda' );
-		$perfiles = array_column ( $datosPerfiles, 'TIP_US' );
-		// $perfiles = array(4, 16, 20, 24, 28, 30, 31, 32, 33, 34, 51, 52, 61, 68, 72, 75, 80, 83, 84, 87, 88, 104, 105, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125);
+		//Inicio: Se busca en la base de datos los datos de la conexión de logueo
+        $conexion = 'appserv';
+        $esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB($conexion);
+        
+        $cadenaSql = $this->miSql->getCadenaSql ( 'buscarRol', 'logueo' );       
+        $resultado = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, 'busqueda' )[0];		
+		//Fin: Se busca en la base de datos los datos de la conexión de logueo
+		
+		//Se necesita una conexión al recurso de base de datos resultado de la consulta
+		
+		//Inicio: Crear conexión logueo
+		//Se crea la conexión a base de datos recursivamente
+		$semilla = 'condor';
+		$conexionDB = array(
+			//'inicio' => true,
+			'dbsys' => $resultado['dbms'],
+			'dbdns' => $resultado['servidor'],
+			'dbpuerto' => $resultado['puerto'],
+			'dbnombre' => $resultado['db'],
+			'dbusuario' => trim($this->decodificar_variable($resultado['usuario'],$semilla)),			
+			'dbclave' =>  trim($this->decodificar_variable($resultado['password'],$semilla))
+		);
+		//Se realiza una conexión con $conexionDB y se le llama logueo
+		$conexion = 'logueo';	
+		$this->miConfigurador->fabricaConexiones->setRecursoDB($conexion, 'registro', $conexionDB);
+		
+		$esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB($conexion);
+		//Fin: Crear conexión logueo
+		
+		$parametros = array(
+        	'usuario' => $usuario,
+        	'sql_tabla1' => $this->configuracion_appserv['sql_tabla1']
+		);
+        $cadenaSql = $this->miSql->getCadenaSql ( 'buscarPerfilesUsuario' , $parametros);
+		$resultado = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, 'busqueda' );
+		
+		$perfiles = array();
+		foreach ($resultado as $key => $value) {
+			$perfiles[] = $value['TIP_US'];
+		}
+		
+		//$perfiles = array(4, 16, 20, 24, 28, 30, 31, 32, 33, 34, 51, 52, 61, 68, 72, 75, 80, 83, 84, 87, 88, 104, 105, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125);
 		
 		$conexion = 'lamasu';
 		$esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB ( $conexion );
-		$cadenaSql = $this->miSql->getCadenaSql ( "datosFuncionario", $usuario );
+		$cadenaSql = $this->miSql->getCadenaSql ( 'datosFuncionario', $usuario );
 		$datosPerfiles = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, "busqueda" );
+		
 		if ($datosPerfiles) {
 			$atributos ['nombre_usuario'] = $datosPerfiles [0] [2];
 		} else {
@@ -103,7 +152,7 @@ class FormularioMenu {
 					}
 					eval ( "\$enlace = \"$enlace\";" );
 					// Se evaluan las variables de los parámetros
-					$enlace = $miEncriptador->{$item ['funcion_codificador']} ( $enlace );
+					$enlace = $this->miEncriptador->{$item ['funcion_codificador']} ( $enlace );
 					$enlace = $item ['host'] . $item ['ruta'] . '?' . $item ['indice_codificador'] . '=' . $enlace;
 				} else { // No es un enlace codificado
 					if ($item ['pagina_enlace'] != '') { // Si existe el parámetro página
@@ -195,8 +244,9 @@ class FormularioMenu {
 		
 		$atributos ['id'] = 'megaMenu';
 		$atributos ['target'] = 'principal';
-		$atributos ['url_escudo'] = $this->imagenBase64($rutaUrlBloque . 'images/escudo.png');
+		$atributos ['url_escudo'] = $this->imagenBase64($rutaUrlBloque . 'images/escudo_ud_blanco2.png');
 		$atributos ['url_foto_perfil'] = $this->imagenBase64($rutaUrlBloque . 'images/profile.png');
+		$atributos ['enlace_cerrar_sesion'] = "/appserv/conexion/salir.php?urano=true";
 		// $atributos ['nombre_usuario'] = 'JORGE ULISES USECHE CUELLAR';
 		$atributos ['profesion'] = 'Msc. Teleinformática';
 		$atributos ['enlaces'] = $enlaces;
@@ -273,6 +323,26 @@ class FormularioMenu {
 		$imagenEncriptada = base64_encode ( $imagen );
 		$url = "data:image/png;base64," . $imagenEncriptada;
 		return $url;
+	}
+	
+	private function decodificar_variable($cadena,$semilla) {
+		$cifrado = MCRYPT_RIJNDAEL_256;
+		$modo = MCRYPT_MODE_ECB;
+		$cadena=base64_decode(str_pad(strtr($cadena, '-_', '+/'), strlen($cadena) % 4, '=', STR_PAD_RIGHT)); 
+        $cadena=mcrypt_decrypt(
+        	$cifrado,
+        	$semilla,
+        	$cadena,
+        	$modo,
+        	mcrypt_create_iv(
+        		mcrypt_get_iv_size(
+        			$cifrado,
+        			$modo
+				),
+				MCRYPT_RAND
+			)
+		);
+        return $cadena;
 	}
 }
 

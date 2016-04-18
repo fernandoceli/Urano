@@ -65,7 +65,11 @@ class encriptar {
         $this->miConfigurador->fabricaConexiones->setRecursoDB ( 'principal' );
 		$this -> cifrado_appserv = MCRYPT_RIJNDAEL_256;
 		$this -> modo_appserv = MCRYPT_MODE_ECB;
-        $this -> config_appserv = $this->getConfiguracion();
+        $this -> config_appserv = $this->getConfiguracionFromDB();
+	}
+	
+	function getConfiguracion(){
+		return $this -> config_appserv;
 	}
 
 	function codificar_url_appserv($cadena) {        
@@ -84,7 +88,7 @@ class encriptar {
 		return $cadena;
 	}
 
-    function getConfiguracion(){
+    private function getConfiguracionFromDB(){
         $conexion = 'appserv';
         $esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB($conexion);
         

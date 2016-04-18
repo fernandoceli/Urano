@@ -4,6 +4,7 @@ $rutaUrlBloque = $this->miConfigurador->getVariableConfiguracion ( "host" ).$thi
 var i = 0;
 
   function cambiarImagen() {
+    /*
     var imagenes = [
       "<?php echo $rutaUrlBloque.'images/header.png'?>",
       "<?php echo $rutaUrlBloque.'images/header2.png'?>",
@@ -22,5 +23,6 @@ var i = 0;
 
       $('#imagenfondo').fadeIn('slow');
     });
+    */
   }
   setInterval(cambiarImagen, 30000);
