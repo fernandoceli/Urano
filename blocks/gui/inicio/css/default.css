@@ -1874,10 +1874,13 @@ section.avatar-panel .button-row {
 .marketing-ios a:hover {
   text-decoration: underline;
 }
+.error {
+    background: #d63920 none repeat scroll 0 0;
+}
 .error, .info, .success {
   border-radius: 2px;
   color: #fff;
-  display: none;
+  /*display: none;*/
   margin-bottom: 5px;
   padding: 5px;
   position: relative;
@@ -1909,7 +1912,7 @@ section.avatar-panel .button-row {
 }
 .success {
   background: #5fad47 none repeat scroll 0 0;
-  display: none;
+  /*display: none;*/
 }
 .info {
   background: #0095dd none repeat scroll 0 0;

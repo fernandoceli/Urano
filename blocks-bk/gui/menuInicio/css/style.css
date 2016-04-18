@@ -1,0 +1,218 @@
+
+
+
+/* //////////////////////// */
+#navigationMenu li{
+	list-style:none;
+	height:50px;
+	padding:2px;
+	width:100px;
+}
+
+#navigationMenu span{
+	/* Container properties */
+	width:0;
+	left:38px;
+	padding:0;
+	position:absolute;
+	overflow:hidden;
+
+	/* Text properties */
+	font-family:'Myriad Pro',Arial, Helvetica, sans-serif;
+	font-size:18px;
+	font-weight:bold;
+	letter-spacing:0.6px;
+	white-space:nowrap;
+	line-height:39px;
+	
+	/* CSS3 Transition: */
+	-webkit-transition: 0.25s;
+	
+	/* Future proofing (these do not work yet): */
+	-moz-transition: 0.25s;
+	transition: 0.25s;
+}
+
+#navigationMenu a{
+	height:100px;
+	width:100px;
+	display:block;
+	position:relative;
+}
+
+/* General hover styles */
+
+#navigationMenu a:hover span{ width:auto; padding:0 20px;overflow:visible; }
+#navigationMenu a:hover{
+	text-decoration:none;
+	
+	/* CSS outer glow with the box-shadow property */
+	-moz-box-shadow:0 0 5px #9ddff5;
+	-webkit-box-shadow:0 0 5px #9ddff5;
+	box-shadow:0 0 5px #9ddff5;
+}
+
+/* Green Button */
+
+#navigationMenu .home {	background-position:0 0;}
+#navigationMenu .home:hover {	background-position:0 0px;}
+#navigationMenu .home span{
+	background-color:#08c;
+	color:#ffffff;
+/*	text-shadow:1px 1px 0 #000000;*/
+}
+
+/* Blue Button */
+
+#navigationMenu .about { background-position:38px 0;}
+#navigationMenu .about:hover { background-position:-38px -39px;}
+#navigationMenu .about span{
+	background-color:#1e8bb4;
+	color:#223a44;
+	text-shadow:1px 1px 0 #44a8d0;
+}
+
+/* Orange Button */
+
+#navigationMenu .services { background-position:-76px 0;}
+#navigationMenu .services:hover { background-position:-76px -39px;}
+#navigationMenu .services span{
+	background-color:#c86c1f;
+	color:#5a3517;
+	text-shadow:1px 1px 0 #d28344;
+}
+
+/* Yellow Button */
+
+#navigationMenu .portfolio { background-position:-114px 0;}
+#navigationMenu .portfolio:hover{ background-position:-114px -39px;}
+#navigationMenu .portfolio span{
+	background-color:#d0a525;
+	color:#604e18;
+	text-shadow:1px 1px 0 #d8b54b;
+}
+
+/* Purple Button */
+
+#navigationMenu .contact { background-position:-152px 0;}
+#navigationMenu .contact:hover { background-position:-152px -39px;}
+#navigationMenu .contact span{
+	background-color:#af1e83;
+	color:#460f35;
+	text-shadow:1px 1px 0 #d244a6;
+}
+
+/* The styles below are only needed for the demo page */
+
+#main{
+	margin:80px auto;
+	position:relative;
+	width:40px;
+}
+/* //////////////////////// */
+
+
+
+#marcoGeneral{
+	background-color: transparent;
+}
+.fxfamilynav-header.dark #tabudistrital::before {
+  background-color: #0c99d5;
+}
+#tabudistrital::before {
+  background-color: #0c99d5;
+}
+#tabudistrital::before {
+  background-color: transparent;
+  content: "";
+  z-index: 1;
+}
+#tabudistrital {
+  position: absolute;
+  right: 0;
+  top: 15px;
+}
+#tabudistrital {
+  float: right;
+}
+#tabudistrital a {
+  background-image: url("../img/tab.png");
+  background-repeat: no-repeat;
+  display: block;
+  height: 40px;
+  overflow: hidden;
+  position: relative;
+  text-indent: 120%;
+  white-space: nowrap;
+  width: 164px;
+  z-index: 2;
+}
+.panel-lateral {
+  position: absolute;
+  top: 95px;
+  right: 69px;
+  width: 300px;
+}
+.panel-lateral {
+  border-radius: 4px;
+  box-shadow: 0 1px 5px #8a9ba8;
+  margin: 15px auto 0;
+  min-height: 100px;
+  padding: 10px;
+  z-index: 100;
+  background-color: #fff;
+}
+aside {
+  width: 50px;
+  height: auto;
+  overflow: visible;
+  position: absolute;
+  top: 100px;
+  right: 10px;
+  z-index: 101;
+}
+.lateral-icon {
+  width: 50px;
+  height: 50px;
+  background-size: 90% 90%;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.lateral {
+  width: 50px;
+  height: 80px;
+  background-size: 90% 90%;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.lateral-icon.news {
+  /*background-image: url("../img/News-100.png");*/
+}
+.lateral-icon.help {
+  background-image: url("../img/Questions-100.png");
+}
+.lateral-icon.others {
+  background-image: url("../img/Plane-100.png");
+}
+.callout {
+  background-image: url("../img/callout.gif");
+  border: 0 none;
+  position: absolute;
+  z-index: 20;
+  height: 22px;
+  width: 12px;
+  right: -12px;
+}
+.callout.section1{
+  top: 8px;
+}
+.callout.section2{
+  top: 60px;
+}
+.callout.section3{
+  top: 116px;
+}

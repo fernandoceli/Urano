@@ -303,6 +303,7 @@ class verifica extends funcionGeneral_appserv
                         $this->direccionar($this->redirLogueo, $variable);
                         exit;
                     } elseif ($registro[0]['COD'] == stripslashes($this->usser) && (strtolower($this->numero . $registro[0]['PWD']) == strtolower($this->pwd))) {
+                    	//Si el usuario y clave son correctas
                         $this->tipoUser = $registro[0]['TIP_US'];
                         //invocala funcion de actualizar la semilla de codificacion
                         $this->actualiza_semilla();
@@ -396,7 +397,8 @@ class verifica extends funcionGeneral_appserv
         if ($actual > $ultima_actualizacion && $this->configuracion['host'] == $this->configuracion['host_logueo']) { //genera la nueva clave segun la antigua
             $nva_clave       = md5(substr($this->configuracion['verificador'], 0, 10));
             //guarda la nueva clave en las bases de datos registradas en la tabla dbms_bd
-            $this->acceso_MY = $this->conectarDB($this->configuracion, "logueo");die;
+            $this->acceso_MY = $this->conectarDB($this->configuracion, "logueo");
+            die;
             if (strtoupper($this->configuracion['activar_redireccion_estudiante']) == 'S') {
                 /*realiza la conexion a la bd del servidor de Estudiantes*/
                 $this->acceso_Est = $this->conectarDB($this->configuracion, "sesiones_estudiante");

@@ -25,8 +25,23 @@ $atributosGlobales ['campoSeguro'] = 'true';
 
 			<section>
 
-				<div class="error"></div>
-				<div class="success"></div>
+				<?php if(isset($_REQUEST['error'])):?>
+				<div class="error">
+					<?php echo $this->lenguaje->getCadena ( $_REQUEST['error'] );?>
+				</div>
+				<?php endif; ?>
+				
+				<?php if(isset($_REQUEST['mostrarMensaje']) && $_REQUEST['mostrarMensaje'] == 'sesionExpirada'):?>
+				<div class="error">
+					¡¡¡Sesión Expirada!!!
+				</div>
+				<?php endif; ?>
+				
+				<?php if(isset($_REQUEST['mensaje'])):?>
+				<div class="success">
+					<?php echo $this->lenguaje->getCadena ( $_REQUEST['mensaje'] );?>
+				</div>
+				<?php endif; ?>
 
         		<?php
 				// ---------------- SECCION: Parámetros Generales del Formulario ----------------------------------
@@ -278,6 +293,7 @@ $atributosGlobales ['campoSeguro'] = 'true';
 </div>
 <footer>
 	<div class="define" id="pie">
+		<!--Based on template https://github.com/jennifervpacheco-->
 		<p style="text-align: center;">
 			<a href="http://autoevaluacion.udistrital.edu.co/version3/"> <img
 				src="<?php echo $rutaUrlBloque.'img/acreditacion.png'?>" />

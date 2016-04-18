@@ -256,7 +256,7 @@ class oci8_appserv
 			//esta linea coloca la pagina y no en el frame
 	               //echo "<script language='JavaScript' type='text/javascript'> top.location.href='../fuera_servicioxDB.php'; </script>";
 	               //esta linea coloca en el frame
-                       echo "<script language='JavaScript' type='text/javascript'> location.href='../fuera_servicioxBD.php'; </script>";
+                       echo "<script language='JavaScript' type='text/javascript'> location.href='/urano/index.php?error=fueraServicioDB'; </script>";
                       
                         exit;
 

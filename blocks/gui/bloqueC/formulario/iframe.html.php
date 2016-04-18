@@ -10,10 +10,13 @@ $enlaceHome = $this -> miConfigurador -> fabricaConexiones -> crypto -> codifica
 <script type="text/javascript">
 	function calcHeight() {
 		//find the height of the internal page
+		document.getElementById('bloqueC').height = 1;
 		var alturaIframe = document.getElementById('bloqueC').contentWindow.document.body.scrollHeight;
+		//alert(alturaIframe);
 		//change the height of the iframe
-		if (alturaIframe <= 720) {
-			alturaIframe = 720;
+		var alturaMinima = 720;
+		if (alturaIframe <= alturaMinima) {
+			alturaIframe = alturaMinima;
 		}
 		document.getElementById('bloqueC').height = alturaIframe;
 	}

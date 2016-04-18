@@ -46,7 +46,7 @@
           </div>
           <!-- /.col-lg-3 -->
           <div class="col-sm-3 col-xs-6">
-            <img src="<?php echo $rutaUrlBloque.'images/Polux_03.png'?>" alt="POLUX" class="img-responsive" />
+            <img src="<?php echo $rutaUrlBloque.'images/POLUX.png'?>" alt="POLUX" class="img-responsive" />
           </div>
           <!-- /.col-lg-3 -->
           <div class="col-sm-3 col-xs-6">
@@ -68,7 +68,7 @@
         <!-- /.row -->
         <div class="row hidden-sm hidden-md hidden-lg">
           <div class="col-xs-6">
-            <img src="<?php echo $rutaUrlBloque.'images/Polux_03.png'?>" alt="POLUX" class="img-responsive" />
+            <img src="<?php echo $rutaUrlBloque.'images/POLUX.png'?>" alt="POLUX" class="img-responsive" />
           </div>
           <!-- /.col-lg-3 -->
           <div class="col-xs-6">
