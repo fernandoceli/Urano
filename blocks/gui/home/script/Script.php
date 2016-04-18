@@ -2,9 +2,7 @@
 $indice = 0;
 $funcion = array ();
 
-$funcion [$indice ++] = "jquery.easy-ticker.js";
-$funtion [$indice ++] = "jquery.easing.min.js";
-// $funtion [$indice ++] = "jquery.easy-ticker.min.js";
+$funcion[$indice++]="jquery.bootstrap.newsbox.js";
 
 $rutaBloque = $this->miConfigurador->getVariableConfiguracion ( "host" );
 $rutaBloque .= $this->miConfigurador->getVariableConfiguracion ( "site" );

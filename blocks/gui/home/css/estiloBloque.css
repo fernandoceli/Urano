@@ -32,7 +32,7 @@ button{
 }
 
 .container2 {
-    width: 94%;
+    width: 100%;
 }
 
 label {
@@ -111,7 +111,7 @@ label {
 
 #mynew{
     /*margin-top: 30px;*/
-    /*width: 60%;*/
+    width: 100%;
     float: left;
     background: #fff;
     display: none;    
@@ -206,4 +206,14 @@ label {
 	width: auto;
 	border: none;
 	padding: 0px 0px;
+}
+
+#label_ahora {
+	display: block;
+	background-color: #FF9800;
+	font-size: 90%;
+	padding-top: 0.5em;
+    padding-bottom: 0.5em;
+	width: 50%;
+	margin-left:25%
 }

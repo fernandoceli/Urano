@@ -95,117 +95,125 @@ class Formulario {
 
 	<!-- row -->
 	<div class="row">
-		<div class="col-sm-6">
-			<h1>Horario de Clase</h1>
+		<div id="col-horario" class="col-sm-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<span class="glyphicon glyphicon-time icon-titulo"></span>
+				<titu>Horario de Clase</titu>
+			</div>
+			<div class="panel-body">
 			<?php
 		include 'horario.php';
 		?>
-
+			</div>
+			<div class="panel-footer"></div>
 		</div>
-
+	</div>
 		<div id="col-noti" class="col-sm-6">
-			<h1>Noticias</h1>
+			
 			
 	<?php
 	
-		$atributos['estilo'] = 'btn-group';
-		$atributos['id'] = 'botones-noticias';
-		echo $this->miFormulario->division("inicio", $atributos);
-		unset($atributos);
+// 		$atributos['estilo'] = 'btn-group';
+// 		$atributos['id'] = 'botones-noticias';
+// 		echo $this->miFormulario->division("inicio", $atributos);
+// 		unset($atributos);
 		
-		// -----------------INICIO CONTROL: Botón ------------------------------------------
-		$esteCampo = 'botonSubir';
-		$atributos ['id'] = $esteCampo;
-		$atributos ['tabIndex'] = $tab;
-		$atributos ['tipo'] = 'boton';
-		$atributos ['estiloBoton'] = 'btnUp btn btn-default';
-		$atributos ["cancelar"] = true;
-		$atributos ['onClick'] = '';
-		$atributos ['sinDivision'] = true;
-		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
-		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
-		$tab++;
-		// Aplica atributos globales al control
-		$atributos = array_merge ( $atributos, $atributosGlobales );
-		echo $this->miFormulario->campoBoton ( $atributos );
-		unset ( $atributos );
-		// -----------------FIN CONTROL: Botón ---------------------------------------
+// 		// -----------------INICIO CONTROL: Botón ------------------------------------------
+// 		$esteCampo = 'botonSubir';
+// 		$atributos ['id'] = $esteCampo;
+// 		$atributos ['tabIndex'] = $tab;
+// 		$atributos ['tipo'] = 'boton';
+// 		$atributos ['estiloBoton'] = 'btnUp btn btn-default';
+// 		$atributos ["cancelar"] = true;
+// 		$atributos ['onClick'] = '';
+// 		$atributos ['sinDivision'] = true;
+// 		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
+// 		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
+// 		$tab++;
+// 		// Aplica atributos globales al control
+// 		$atributos = array_merge ( $atributos, $atributosGlobales );
+// 		echo $this->miFormulario->campoBoton ( $atributos );
+// 		unset ( $atributos );
+// 		// -----------------FIN CONTROL: Botón ---------------------------------------
 		
-		// -----------------INICIO CONTROL: Botón ------------------------------------------
-		$esteCampo = 'botonBajar';
-		$atributos ['id'] = $esteCampo;
-		$atributos ['tabIndex'] = $tab;
-		$atributos ['tipo'] = 'boton';
-		$atributos ['estiloBoton'] = 'btnDown btn btn-info';
-		$atributos ["cancelar"] = true;
-		$atributos ['onClick'] = '';
-		$atributos ['sinDivision'] = true;
-		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
-		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
-		$tab++;
-		// Aplica atributos globales al control
-		$atributos = array_merge ( $atributos, $atributosGlobales );
-		echo $this->miFormulario->campoBoton ( $atributos );
-		unset ( $atributos );
-		// -----------------FIN CONTROL: Botón ---------------------------------------
+// 		// -----------------INICIO CONTROL: Botón ------------------------------------------
+// 		$esteCampo = 'botonBajar';
+// 		$atributos ['id'] = $esteCampo;
+// 		$atributos ['tabIndex'] = $tab;
+// 		$atributos ['tipo'] = 'boton';
+// 		$atributos ['estiloBoton'] = 'btnDown btn btn-info';
+// 		$atributos ["cancelar"] = true;
+// 		$atributos ['onClick'] = '';
+// 		$atributos ['sinDivision'] = true;
+// 		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
+// 		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
+// 		$tab++;
+// 		// Aplica atributos globales al control
+// 		$atributos = array_merge ( $atributos, $atributosGlobales );
+// 		echo $this->miFormulario->campoBoton ( $atributos );
+// 		unset ( $atributos );
+// 		// -----------------FIN CONTROL: Botón ---------------------------------------
 		
-		// -----------------INICIO CONTROL: Botón ------------------------------------------
-		$esteCampo = 'botonToggle';
-		$atributos ['id'] = $esteCampo;
-		$atributos ['tabIndex'] = $tab;
-		$atributos ['tipo'] = 'boton';
-		$atributos ['estiloBoton'] = 'btnToggle btn btn-success';
-		$atributos ["cancelar"] = true;
-		$atributos ['onClick'] = '';
-		$atributos ['sinDivision'] = true;
-		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
-		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
-		$tab++;
-		// Aplica atributos globales al control
-		$atributos = array_merge ( $atributos, $atributosGlobales );
-		echo $this->miFormulario->campoBoton ( $atributos );
-		unset ( $atributos );
-		// -----------------FIN CONTROL: Botón ---------------------------------------
+// 		// -----------------INICIO CONTROL: Botón ------------------------------------------
+// 		$esteCampo = 'botonToggle';
+// 		$atributos ['id'] = $esteCampo;
+// 		$atributos ['tabIndex'] = $tab;
+// 		$atributos ['tipo'] = 'boton';
+// 		$atributos ['estiloBoton'] = 'btnToggle btn btn-success';
+// 		$atributos ["cancelar"] = true;
+// 		$atributos ['onClick'] = '';
+// 		$atributos ['sinDivision'] = true;
+// 		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
+// 		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
+// 		$tab++;
+// 		// Aplica atributos globales al control
+// 		$atributos = array_merge ( $atributos, $atributosGlobales );
+// 		echo $this->miFormulario->campoBoton ( $atributos );
+// 		unset ( $atributos );
+// 		// -----------------FIN CONTROL: Botón ---------------------------------------
 		
-		// -----------------INICIO CONTROL: Botón ------------------------------------------
-		$esteCampo = 'botonVerMas';
-		$atributos ['id'] = $esteCampo;
-		$atributos ['tabIndex'] = $tab;
-		$atributos ['tipo'] = 'boton';
-		$atributos ['estiloBoton'] = 'btnVerMas btn btn-warning';
-		$atributos ["cancelar"] = true;
-		$atributos ['onClick'] = '';
-		$atributos ['sinDivision'] = true;
-		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
-		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
-		$tab++;
-		// Aplica atributos globales al control
-		$atributos = array_merge ( $atributos, $atributosGlobales );
-		echo $this->miFormulario->campoBoton ( $atributos );
-		unset ( $atributos );
-		// -----------------FIN CONTROL: Botón ---------------------------------------
+// 		// -----------------INICIO CONTROL: Botón ------------------------------------------
+// 		$esteCampo = 'botonVerMas';
+// 		$atributos ['id'] = $esteCampo;
+// 		$atributos ['tabIndex'] = $tab;
+// 		$atributos ['tipo'] = 'boton';
+// 		$atributos ['estiloBoton'] = 'btnVerMas btn btn-warning';
+// 		$atributos ["cancelar"] = true;
+// 		$atributos ['onClick'] = '';
+// 		$atributos ['sinDivision'] = true;
+// 		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
+// 		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
+// 		$tab++;
+// 		// Aplica atributos globales al control
+// 		$atributos = array_merge ( $atributos, $atributosGlobales );
+// 		echo $this->miFormulario->campoBoton ( $atributos );
+// 		unset ( $atributos );
+// 		// -----------------FIN CONTROL: Botón ---------------------------------------
 		
-		// -----------------INICIO CONTROL: Botón ------------------------------------------
-		$esteCampo = 'botonVerMenos';
-		$atributos ['id'] = $esteCampo;
-		$atributos ['tabIndex'] = $tab;
-		$atributos ['tipo'] = 'boton';
-		$atributos ['estiloBoton'] = 'btnVerMenos btn btn-primary';
-		$atributos ["cancelar"] = true;
-		$atributos ['onClick'] = '';
-		$atributos ['sinDivision'] = true;
-		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
-		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
-		$tab++;
-		// Aplica atributos globales al control
-		$atributos = array_merge ( $atributos, $atributosGlobales );
-		echo $this->miFormulario->campoBoton ( $atributos );
-		unset ( $atributos );
-		// -----------------FIN CONTROL: Botón ---------------------------------------
+// 		// -----------------INICIO CONTROL: Botón ------------------------------------------
+// 		$esteCampo = 'botonVerMenos';
+// 		$atributos ['id'] = $esteCampo;
+// 		$atributos ['tabIndex'] = $tab;
+// 		$atributos ['tipo'] = 'boton';
+// 		$atributos ['estiloBoton'] = 'btnVerMenos btn btn-primary';
+// 		$atributos ["cancelar"] = true;
+// 		$atributos ['onClick'] = '';
+// 		$atributos ['sinDivision'] = true;
+// 		$atributos ['valor'] = $this->lenguaje->getCadena ( $esteCampo );
+// 		$atributos ['nombreFormulario'] = $esteBloque ['nombre'];
+// 		$tab++;
+// 		// Aplica atributos globales al control
+// 		$atributos = array_merge ( $atributos, $atributosGlobales );
+// 		echo $this->miFormulario->campoBoton ( $atributos );
+// 		unset ( $atributos );
+// 		// -----------------FIN CONTROL: Botón ---------------------------------------
 		
-		echo $this->miFormulario->division("fin");
+// 		echo $this->miFormulario->division("fin");
 		
-		include 'noticias.php';
+// 		include 'noticias.php';
+		
+		include 'noticias2.php';
 		?>
 		</div>
 	</div>

@@ -16,12 +16,13 @@ if ($_REQUEST ['funcion'] == 'buscarHorario') {
 }
 
 $hoy = getdate();
-
+//var_dump($hoy);
 $diaActual=$hoy['wday'];
-$diaActual=3;
+//$diaActual=3;
 
 $arrayMeses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
 $arrayDias = array( 'Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado');
+//echo '<br>';
 echo $arrayDias[date('w')].", ".date('d')." de ".$arrayMeses[date('m')-1]." de ".date('Y');
 
 function diaHora($dia, $hora){
@@ -196,27 +197,34 @@ function resum($in,$fin,$minutos, $dia){
     	//si se repite
     	if($i>0){
     		$l=$i-1;
-    		if((${"espacio".$i}==${"espacio".$l}) &&($matrizHorario[$i]['DIA']==$matrizHorario[$l]['DIA'])){
+    		if((${"espacio".$i}==${"espacio".$l}) &&($matrizHorario[$i]['DIA']==$matrizHorario[$l]['DIA'])&&($matrizHorario[$l]['HORA']==($matrizHorario[$i]['HORA']-1))&&(${"sede".$i}==${"sede".$l})){
     			${"tede".$i}=${"tede".$l};
     			//hora inicial
     			$horaAnterior=$matrizHorario[$l]['HORA'];
     			//hora final
-    			$horaActual=$matrizHorario[$i]['HORA']+1;
+    			$horaFinal=$matrizHorario[$i]['HORA']+1;
     			$horaMedia=$matrizHorario[$i]['HORA'];
     			
     			$numeroDia=numDia($matrizHorario[$i]['DIA']);
     			
     			$formatoHI=formatoHora($horaAnterior);
-    			$formatoHF=formatoHora($horaActual);
+    			$formatoHF=formatoHora($horaFinal);
     			$formatoHM=formatoHora($horaMedia);
     			
+    		
     			$uniq = str_replace(' ', '', str_replace(':', '', $formatoHM));
     			$rest = substr($uniq, -6, 4);
     			
+    			if($hoy['hours']==$horaAnterior-4 || $hoy['hours']==$horaMedia-4){
+    				$ahora = "<div style='margin-top: 8%'><span class='label' id='label_ahora'>Ahora</span></div>";
+    			}else{
+    				$ahora='';
+    			}
+    			//var_dump($ahora);
     			?>
 				<script type="text/javascript">
-					$("<?php echo "#".$rest.$numeroDia."t";?>").text("<?php echo $formatoHI.' - '.$formatoHF; ?>");
-    			   
+				$("<?php echo "#".$rest.$numeroDia."t";?>").html("<?php echo $formatoHI.' - '.$formatoHF.$ahora; ?>");
+ 			   
     			        	
     			</script>
     			    <?php 
@@ -296,7 +304,7 @@ if($diaActual==1 && $materiasDia){
 	echo'<table id="tablaLunes" class="table table-bordered">';
     // Acomodar Dias
     echo'<thead>
-    <th><i class="fa fa-clock-o"></i> Horario</th>';
+    <th><i class=""></i> Hora</th>';
     echo '<th><i class="fa fa-angle-right"></i> Lunes</th>';
     echo '</thead>
     <tbody>';

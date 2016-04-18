@@ -31,13 +31,13 @@ $(document).ready(function() {
 	                 
 	                 success: function(data){
 	                	 $('#mynew').append(data);
-	                     $('#mynew').addClass('animated zoomIn').fadeIn();
-	                     setTimeout(function(){$('#mynew').removeClass('animated zoomIn');},1500);
+	                     $('#mynew').fadeIn();
 	                 }
 	        });
 	//=============================================================================
 	    });
 	});
+
 </script>
 
 <script>

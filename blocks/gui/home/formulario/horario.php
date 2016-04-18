@@ -8,11 +8,9 @@ unset ( $atributos );
 
 
 ?>
-
-<div id="mynew">
-
-</div>
-
+	<div id="mynew">
+	
+	</div>
 <?php
 echo $this->miFormulario->division ( "fin" );
 ?>
